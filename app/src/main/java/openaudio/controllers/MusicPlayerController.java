@@ -1,6 +1,5 @@
 package openaudio.controllers;
 
-import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Label;
@@ -10,7 +9,9 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.layout.VBox;
 import openaudio.models.Song;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Screen;
 
 import javafx.animation.*;
 import javafx.util.Duration;
@@ -47,12 +48,31 @@ public class MusicPlayerController {
     }
 
     public void initialize() {
+        Screen screen = Screen.getPrimary();
+        double width = screen.getVisualBounds().getWidth();
+
         this.vBox = new VBox();
         this.slider = new Slider();
         vBox.getChildren().add(this.slider);
-
+        
         this.playButton = new Button();
         vBox.getChildren().add(this.playButton);
+        Image playImage = new Image(getClass().getResourceAsStream("/img/play-icon.png"));
+        Image pauseImage = new Image(getClass().getResourceAsStream("/img/pause-icon.png"));
+        ImageView playPauseView = new ImageView(playImage);
+        playPauseView.setFitHeight(width / 80);
+        playPauseView.setFitWidth(width / 80);
+        this.playButton.setGraphic(playPauseView);
+
+        this.playButton.setOnAction(event -> {
+            if (playPauseView.getImage().equals(playImage)) {
+                playPauseView.setImage(pauseImage);
+                this.mediaPlayer.pause();
+            } else {
+                playPauseView.setImage(playImage);
+                this.mediaPlayer.play();
+            }
+        });
 
         this.songLabel = new Label("OK Computer by Radiohead");
         vBox.getChildren().add(this.songLabel);
