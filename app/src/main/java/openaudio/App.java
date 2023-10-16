@@ -28,12 +28,11 @@ public class App extends Application {
         this.albumController = new AlbumController();
         this.albumController.initialize(stage);
 
-        Song paranoidAndroid = new Song("Paranoid Android", "Radiohead", "OKNOTOK", 100.0f, "/home/user/Documents/OpenAudio/app/src/main/resources/abc.mp3");
+        Song paranoidAndroid = new Song("Paranoid Android", "Radiohead", "OKNOTOK", 100.0f, "/home/user/Music/OK Computer/01 Airbag.mp3");
         this.musicPlayer.playSong(paranoidAndroid);
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(this.albumController.getVBox());
         borderPane.setBottom(this.musicPlayer.getVBox());
-        // stackPane.getChildren().addAll(this.albumController.getVBox(), this.musicPlayer.getVBox());
         Scene scene = new Scene(borderPane, 640, 480);
         stage.setScene(scene);
         stage.show();

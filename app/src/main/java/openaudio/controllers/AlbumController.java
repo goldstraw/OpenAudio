@@ -8,6 +8,10 @@ import openaudio.utils.Settings;
 import openaudio.models.Album;
 import javafx.scene.control.Label;
 import java.io.File;
+import javafx.scene.image.ImageView;
+import javafx.scene.effect.SepiaTone;
+import javafx.scene.text.TextAlignment;
+import openaudio.views.FocusView;
 
 
 public class AlbumController {
@@ -16,10 +20,6 @@ public class AlbumController {
     private Button chooseDirButton;
 
     private Album[] loadAlbums() {
-        // Load albums from music folder
-        // For each folder in music folder, create an album object
-        // Return array of albums
-
         String musicFolder = Settings.getInstance().musicFolder;
         String[] albumFolders = new File(musicFolder).list();
 
@@ -49,8 +49,28 @@ public class AlbumController {
             Album[] albums = loadAlbums();
 
             for (Album album : albums) {
+                ImageView albumCover = new ImageView(album.getCoverImage());
+                albumCover.setFitHeight(50);
+                albumCover.setFitWidth(50);
+                albumCover.setPreserveRatio(true);
+
+                //Create an overlay effect when mouse hovers over the album cover
+                albumCover.setOnMouseEntered(e -> albumCover.setEffect(new SepiaTone()));
+                albumCover.setOnMouseExited(e -> albumCover.setEffect(null));
+
+                // Event Listener for MouseClick
+                albumCover.setOnMouseClicked(e -> new FocusView(album));
+
+                //Create Label for the album name
                 Label albumLabel = new Label(album.getName());
-                this.vBox.getChildren().add(albumLabel);
+                albumLabel.setWrapText(true);
+                albumLabel.setTextAlignment(TextAlignment.CENTER);
+
+                //Create VBox and add both ImageView and Label
+                VBox albumBox = new VBox(albumCover, albumLabel);
+                albumBox.setAlignment(Pos.CENTER);
+
+                this.vBox.getChildren().add(albumBox);
             }
 
         }

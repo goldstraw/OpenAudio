@@ -2,32 +2,64 @@ package openaudio.models;
 
 import java.io.File;
 import openaudio.utils.Settings;
+import javafx.scene.image.Image;
+import java.util.List;
+import java.util.ArrayList;
+import java.net.MalformedURLException;
 
-public class Album {
+public class Album implements SongCollection {
 
     private String title;
     private String artist;
     private String filePath;
-    private Song[] songs;
+    private List<Song> songs;
+    private Image coverImage;
 
     public Album(String filePath) {
         this.filePath = filePath;
         this.title = filePath;
         this.artist = "Unknown";
         this.songs = loadSongs();
+
+        // Load the cover image
+        this.coverImage = loadCoverImage();
     }
 
-    public Song[] loadSongs() {
+    public List<Song> loadSongs() {
         String musicFolder = Settings.getInstance().musicFolder;
-        String[] songFiles = new File(musicFolder + "/" + this.filePath).list();
+        String albumFolder = musicFolder + "/" + this.filePath;
+        String[] allFiles = new File(albumFolder).list();
 
-        Song[] songs = new Song[songFiles.length];
+        List<Song> songs = new ArrayList<Song>();
 
-        for (int i = 0; i < songFiles.length; i++) {
-            songs[i] = new Song(songFiles[i]);
+        for (int i = 0; i < allFiles.length; i++) {
+            if (allFiles[i].endsWith(".mp3") || allFiles[i].endsWith(".wav")) {
+                songs.add(new Song(albumFolder + "/" + allFiles[i]));
+            }
         }
 
         return songs;
+    }
+
+    public Image loadCoverImage() {
+        String musicFolder = Settings.getInstance().musicFolder;
+        String albumFolder = musicFolder + "/" + this.filePath;
+        String[] allFiles = new File(albumFolder).list();
+
+        for (int i = 0; i < allFiles.length; i++) {
+            if (allFiles[i].endsWith(".jpg") || allFiles[i].endsWith(".png")) {
+                try {
+                    File file = new File(albumFolder + "/" + allFiles[i]);
+                    String imageURL = file.toURI().toURL().toString();
+                    return new Image(imageURL);
+                } catch (MalformedURLException ex) {
+                    System.out.println("Invalid URL for image");
+                }
+            
+            }
+        }
+
+        return null;
     }
 
     public String getArtist() {
@@ -46,7 +78,11 @@ public class Album {
         return this.title;
     }
 
-    public Song[] getSongs() {
+    public List<Song> getSongs() {
         return this.songs;
+    }
+
+    public Image getCoverImage() {
+        return this.coverImage;
     }
 }
