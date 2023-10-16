@@ -10,6 +10,14 @@ public class Song {
     private float duration; // in seconds
     private String filePath;
 
+    public Song(String filePath) {
+        this.filePath = filePath;
+        this.title = filePath;
+        this.artist = "Unknown";
+        this.album = "Unknown";
+        this.duration = 0;
+    }
+
     public Song(String title, String artist, String album, float duration, String filePath) {
         this.title = title;
         this.artist = artist;

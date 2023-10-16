@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 public class Settings {
 
@@ -42,7 +43,7 @@ public class Settings {
         }
     }
 
-    public void chooseDirectory(Stage primaryStage) {
+    public void chooseDirectory(Stage primaryStage, Button chooseDirButton) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Your Music Directory");
 
@@ -56,6 +57,8 @@ public class Settings {
                 OutputStream outputStream = new FileOutputStream(propertiesFileName);
                 properties.store(outputStream, null);
                 outputStream.close();
+                // Hide the choose directory button
+                chooseDirButton.setVisible(false);
             } catch (Exception e) {
                 System.out.println("Error saving properties: " + e.getMessage());
             }
