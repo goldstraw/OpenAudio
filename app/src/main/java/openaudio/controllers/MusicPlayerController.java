@@ -12,6 +12,7 @@ import openaudio.models.Song;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
+import javafx.geometry.Pos;
 
 import javafx.animation.*;
 import javafx.util.Duration;
@@ -29,6 +30,10 @@ public class MusicPlayerController {
     private AtomicBoolean userIsDraggingSlider = new AtomicBoolean(false);
     private Timeline sliderUpdater;
     private Slider slider;
+    ImageView playPauseView;
+    
+    private final Image playImage = new Image(getClass().getResourceAsStream("/img/play-icon.png"));
+    private final Image pauseImage = new Image(getClass().getResourceAsStream("/img/pause-icon.png"));
 
     public void playSong(Song song) {
         if (this.mediaPlayer != null) {
@@ -44,41 +49,46 @@ public class MusicPlayerController {
             this.currentSongSeconds.set(newValue.toSeconds());
         });
 
+        this.playPauseView.setImage(pauseImage);
         mediaPlayer.play();
     }
 
-    public void initialize() {
+    private void initializeComponents() {
         Screen screen = Screen.getPrimary();
         double width = screen.getVisualBounds().getWidth();
 
         this.vBox = new VBox();
-        this.slider = new Slider();
-        vBox.getChildren().add(this.slider);
-        
+        this.vBox.setAlignment(Pos.BOTTOM_CENTER);
+
         this.playButton = new Button();
         vBox.getChildren().add(this.playButton);
-        Image playImage = new Image(getClass().getResourceAsStream("/img/play-icon.png"));
-        Image pauseImage = new Image(getClass().getResourceAsStream("/img/pause-icon.png"));
-        ImageView playPauseView = new ImageView(playImage);
-        playPauseView.setFitHeight(width / 80);
-        playPauseView.setFitWidth(width / 80);
+        this.playPauseView = new ImageView(this.playImage);
+        this.playPauseView.setFitHeight(width / 80);
+        this.playPauseView.setFitWidth(width / 80);
         this.playButton.setGraphic(playPauseView);
 
-        this.playButton.setOnAction(event -> {
-            if (playPauseView.getImage().equals(playImage)) {
-                playPauseView.setImage(pauseImage);
-                this.mediaPlayer.pause();
-            } else {
-                playPauseView.setImage(playImage);
-                this.mediaPlayer.play();
-            }
-        });
+        this.slider = new Slider();
+        vBox.getChildren().add(this.slider);
 
         this.songLabel = new Label("OK Computer by Radiohead");
         vBox.getChildren().add(this.songLabel);
 
         this.currentSongSeconds = new SimpleDoubleProperty();
+    }
 
+    private void configurePlayButtonAction() {
+        this.playButton.setOnAction(event -> {
+            if (playPauseView.getImage().equals(playImage)) {
+                playPauseView.setImage(pauseImage);
+                this.mediaPlayer.play();
+            } else {
+                playPauseView.setImage(playImage);
+                this.mediaPlayer.pause();
+            }
+        });
+    }
+
+    private void configureSlider() {
         slider.setOnMousePressed(event -> {
             userIsDraggingSlider.set(true);
         });
@@ -103,6 +113,12 @@ public class MusicPlayerController {
         );
         sliderUpdater.setCycleCount(Timeline.INDEFINITE);
         sliderUpdater.play();
+    }
+
+    public void initialize() {
+        initializeComponents();
+        configurePlayButtonAction();
+        configureSlider();
     }
 
     public VBox getVBox() {

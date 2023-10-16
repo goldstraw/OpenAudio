@@ -5,23 +5,36 @@ package openaudio;
 
 import openaudio.models.Song;
 import openaudio.controllers.MusicPlayerController;
+import openaudio.controllers.AlbumController;
+import openaudio.utils.Settings;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 
 public class App extends Application {
 
-    private MusicPlayerController controller;
+    private MusicPlayerController musicPlayer;
+    private AlbumController albumController;
 
     @Override
     public void start(Stage stage) {
-        this.controller = new MusicPlayerController();
-        this.controller.initialize();
+        Settings.getInstance().readProperties();
+
+        this.musicPlayer = new MusicPlayerController();
+        this.musicPlayer.initialize();
+
+        this.albumController = new AlbumController();
+        this.albumController.initialize(stage);
+
         Song paranoidAndroid = new Song("Paranoid Android", "Radiohead", "OKNOTOK", 100.0f, "/home/user/Documents/OpenAudio/app/src/main/resources/abc.mp3");
-        this.controller.playSong(paranoidAndroid);
-        Scene scene = new Scene(new StackPane(this.controller.getVBox()), 640, 480);
+        this.musicPlayer.playSong(paranoidAndroid);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setLeft(this.albumController.getVBox());
+        borderPane.setBottom(this.musicPlayer.getVBox());
+        // stackPane.getChildren().addAll(this.albumController.getVBox(), this.musicPlayer.getVBox());
+        Scene scene = new Scene(borderPane, 640, 480);
         stage.setScene(scene);
         stage.show();
     }
