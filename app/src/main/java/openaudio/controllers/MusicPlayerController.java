@@ -19,6 +19,7 @@ import javafx.util.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
+// Singleton
 public class MusicPlayerController {
 
     private VBox vBox;
@@ -34,6 +35,18 @@ public class MusicPlayerController {
     
     private final Image playImage = new Image(getClass().getResourceAsStream("/img/play-icon.png"));
     private final Image pauseImage = new Image(getClass().getResourceAsStream("/img/pause-icon.png"));
+
+    private static MusicPlayerController instance = null;
+
+    public static MusicPlayerController getInstance() {
+        if (instance == null) {
+            instance = new MusicPlayerController();
+        }
+        return instance;
+    }
+
+    private MusicPlayerController() {
+    }
 
     public void playSong(Song song) {
         if (this.mediaPlayer != null) {

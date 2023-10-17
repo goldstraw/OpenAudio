@@ -12,7 +12,10 @@ public class Song {
 
     public Song(String filePath) {
         this.filePath = filePath;
-        this.title = filePath;
+        // Read end of file path to get title
+        String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+        this.title = fileName.substring(0, fileName.lastIndexOf('.'));
+
         this.artist = "Unknown";
         this.album = "Unknown";
         this.duration = 0;
@@ -44,5 +47,13 @@ public class Song {
 
     public String getFilePath() {
         return this.filePath;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public float getDuration() {
+        return duration;
     }
 }

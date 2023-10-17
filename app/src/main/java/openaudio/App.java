@@ -7,6 +7,7 @@ import openaudio.models.Song;
 import openaudio.controllers.MusicPlayerController;
 import openaudio.controllers.AlbumController;
 import openaudio.utils.Settings;
+import openaudio.views.FocusView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -17,22 +18,26 @@ public class App extends Application {
 
     private MusicPlayerController musicPlayer;
     private AlbumController albumController;
+    private FocusView focusView;
 
     @Override
     public void start(Stage stage) {
         Settings.getInstance().readProperties();
 
-        this.musicPlayer = new MusicPlayerController();
+        this.musicPlayer = MusicPlayerController.getInstance();
         this.musicPlayer.initialize();
 
         this.albumController = new AlbumController();
         this.albumController.initialize(stage);
+
+        this.focusView = FocusView.getInstance();
 
         Song paranoidAndroid = new Song("Paranoid Android", "Radiohead", "OKNOTOK", 100.0f, "/home/user/Music/OK Computer/01 Airbag.mp3");
         this.musicPlayer.playSong(paranoidAndroid);
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(this.albumController.getVBox());
         borderPane.setBottom(this.musicPlayer.getVBox());
+        borderPane.setCenter(this.focusView.getVBox());
         Scene scene = new Scene(borderPane, 640, 480);
         stage.setScene(scene);
         stage.show();

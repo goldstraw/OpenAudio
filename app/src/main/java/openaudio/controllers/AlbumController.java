@@ -9,7 +9,7 @@ import openaudio.models.Album;
 import javafx.scene.control.Label;
 import java.io.File;
 import javafx.scene.image.ImageView;
-import javafx.scene.effect.SepiaTone;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.text.TextAlignment;
 import openaudio.views.FocusView;
 
@@ -55,11 +55,13 @@ public class AlbumController {
                 albumCover.setPreserveRatio(true);
 
                 //Create an overlay effect when mouse hovers over the album cover
-                albumCover.setOnMouseEntered(e -> albumCover.setEffect(new SepiaTone()));
+                albumCover.setOnMouseEntered(e -> albumCover.setEffect(new DropShadow()));
                 albumCover.setOnMouseExited(e -> albumCover.setEffect(null));
 
                 // Event Listener for MouseClick
-                albumCover.setOnMouseClicked(e -> new FocusView(album));
+                albumCover.setOnMouseClicked(e -> {
+                    FocusView.getInstance().setSongCollection(album);
+                });
 
                 //Create Label for the album name
                 Label albumLabel = new Label(album.getName());
