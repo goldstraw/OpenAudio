@@ -26,7 +26,7 @@ public class Song {
         this.artist = artist;
         this.album = album;
         this.duration = duration;
-        this.filePath = new File(filePath).toURI().toString();
+        this.filePath = filePath;
     }
 
     public String getArtist() {

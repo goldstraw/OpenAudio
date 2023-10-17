@@ -2,10 +2,12 @@ package openaudio.views;
 
 import openaudio.models.SongCollection;
 import openaudio.models.Song;
+import openaudio.controllers.MusicPlayerController;
+import openaudio.controllers.QueueController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
-import openaudio.controllers.MusicPlayerController;
+import java.util.List;
 
 
 public class FocusView {
@@ -41,6 +43,8 @@ public class FocusView {
             Button songButton = new Button(song.getTitle());
             songButton.setOnAction(event -> {
                 MusicPlayerController.getInstance().playSong(song);
+                List<Song> remainingSongs = this.songCollection.getRemainingSongs(song);
+                QueueController.getInstance().setCollection(remainingSongs);
             });
             this.vBox.getChildren().add(songButton);
         }

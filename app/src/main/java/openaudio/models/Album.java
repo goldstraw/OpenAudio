@@ -6,6 +6,8 @@ import javafx.scene.image.Image;
 import java.util.List;
 import java.util.ArrayList;
 import java.net.MalformedURLException;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Album implements SongCollection {
 
@@ -38,6 +40,12 @@ public class Album implements SongCollection {
             }
         }
 
+        Collections.sort(songs, new Comparator<Song>() {
+            public int compare(Song s1, Song s2) {
+                return s1.getTitle().compareTo(s2.getTitle());
+            }
+        });
+
         return songs;
     }
 
@@ -60,6 +68,19 @@ public class Album implements SongCollection {
         }
 
         return null;
+    }
+
+    public List<Song> getRemainingSongs(Song currentSong) {
+        List<Song> remainingSongs = new ArrayList<Song>();
+        boolean foundCurrentSong = false;
+        for (Song song : this.songs) {
+            if (song == currentSong) {
+                foundCurrentSong = true;
+            } else if (foundCurrentSong) {
+                remainingSongs.add(song);
+            }
+        }
+        return remainingSongs;
     }
 
     public String getArtist() {

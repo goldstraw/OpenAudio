@@ -1,5 +1,7 @@
 package openaudio.controllers;
 
+import openaudio.models.Song;
+import openaudio.controllers.QueueController;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Label;
@@ -8,14 +10,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.layout.VBox;
-import openaudio.models.Song;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.geometry.Pos;
-
 import javafx.animation.*;
 import javafx.util.Duration;
+import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -52,7 +53,9 @@ public class MusicPlayerController {
         if (this.mediaPlayer != null) {
             this.mediaPlayer.stop();
         }
-        this.mediaPlayer = new MediaPlayer(new Media(song.getFilePath()));
+        this.songLabel.setText(song.getTitle());
+        File file = new File(song.getFilePath());
+        this.mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
 
         this.mediaPlayer.setOnReady(() -> {
             this.slider.setMax(this.mediaPlayer.getMedia().getDuration().toSeconds());
@@ -60,6 +63,13 @@ public class MusicPlayerController {
 
         mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
             this.currentSongSeconds.set(newValue.toSeconds());
+        });
+
+        mediaPlayer.setOnEndOfMedia(() -> {
+            Song nextSong = QueueController.getInstance().getNextSong();
+            if (nextSong != null) {
+                playSong(nextSong);
+            }
         });
 
         this.playPauseView.setImage(pauseImage);
