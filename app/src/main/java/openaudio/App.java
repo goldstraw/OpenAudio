@@ -31,9 +31,7 @@ public class App extends Application {
         this.albumController.initialize(stage);
 
         this.focusView = FocusView.getInstance();
-
-        Song paranoidAndroid = new Song("Paranoid Android", "Radiohead", "OKNOTOK", 100.0f, "/home/user/Music/OK Computer/01 Airbag.mp3");
-        this.musicPlayer.playSong(paranoidAndroid);
+        
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(this.albumController.getVBox());
         borderPane.setBottom(this.musicPlayer.getVBox());

@@ -8,6 +8,7 @@ import java.util.List;
 // Singleton
 public class QueueController {
 
+    private LinkedList<Song> history = new LinkedList<Song>();
     private LinkedList<Song> userQueue = new LinkedList<Song>();
     private LinkedList<Song> collectionQueue = new LinkedList<Song>();
     private LinkedList<Song> recommendationQueue = new LinkedList<Song>();
@@ -26,6 +27,12 @@ public class QueueController {
 
     public void addUserSong(Song song) {
         this.userQueue.add(song);
+    }
+
+    // Add song to the front of the queue, so it plays next
+    // Used when the user goes back to a previous song
+    public void addUserSongToFront(Song song) {
+        this.userQueue.addFirst(song);
     }
 
     public void setCollection(SongCollection collection) {
@@ -55,5 +62,17 @@ public class QueueController {
             addRecommendation();
             return this.recommendationQueue.removeFirst();
         }
+    }
+
+    public Song getPreviousSong() {
+        if (this.history.size() > 0) {
+            return this.history.removeLast();
+        } else {
+            return null;
+        }
+    }
+
+    public void addSongToHistory(Song song) {
+        this.history.add(song);
     }
 }

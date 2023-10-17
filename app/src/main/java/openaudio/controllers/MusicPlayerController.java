@@ -25,14 +25,16 @@ public class MusicPlayerController {
 
     private VBox vBox;
     private Button playButton;
+    private Button nextButton;
+    private Button previousButton;
     private Label songLabel;
     private DoubleProperty currentSongSeconds;
-
     private MediaPlayer mediaPlayer;
     private AtomicBoolean userIsDraggingSlider = new AtomicBoolean(false);
     private Timeline sliderUpdater;
     private Slider slider;
-    ImageView playPauseView;
+    private ImageView playPauseView;
+    private Song currentSong;
     
     private final Image playImage = new Image(getClass().getResourceAsStream("/img/play-icon.png"));
     private final Image pauseImage = new Image(getClass().getResourceAsStream("/img/pause-icon.png"));
@@ -67,13 +69,13 @@ public class MusicPlayerController {
 
         mediaPlayer.setOnEndOfMedia(() -> {
             Song nextSong = QueueController.getInstance().getNextSong();
-            if (nextSong != null) {
-                playSong(nextSong);
-            }
+            playSong(nextSong);
         });
 
         this.playPauseView.setImage(pauseImage);
         mediaPlayer.play();
+
+        this.currentSong = song;
     }
 
     private void initializeComponents() {
@@ -90,16 +92,6 @@ public class MusicPlayerController {
         this.playPauseView.setFitWidth(width / 80);
         this.playButton.setGraphic(playPauseView);
 
-        this.slider = new Slider();
-        vBox.getChildren().add(this.slider);
-
-        this.songLabel = new Label("OK Computer by Radiohead");
-        vBox.getChildren().add(this.songLabel);
-
-        this.currentSongSeconds = new SimpleDoubleProperty();
-    }
-
-    private void configurePlayButtonAction() {
         this.playButton.setOnAction(event -> {
             if (playPauseView.getImage().equals(playImage)) {
                 playPauseView.setImage(pauseImage);
@@ -109,6 +101,31 @@ public class MusicPlayerController {
                 this.mediaPlayer.pause();
             }
         });
+
+        this.nextButton = new Button("Next");
+        vBox.getChildren().add(this.nextButton);
+        this.nextButton.setOnAction(event -> {
+            QueueController.getInstance().addSongToHistory(this.currentSong);
+            playSong(QueueController.getInstance().getNextSong());
+        });
+
+        this.previousButton = new Button("Previous");
+        vBox.getChildren().add(this.previousButton);
+        this.previousButton.setOnAction(event -> {
+            Song previousSong = QueueController.getInstance().getPreviousSong();
+            QueueController.getInstance().addUserSongToFront(this.currentSong);
+            if (previousSong != null) {
+                playSong(previousSong);
+            }
+        });
+
+        this.slider = new Slider();
+        vBox.getChildren().add(this.slider);
+
+        this.songLabel = new Label("OK Computer by Radiohead");
+        vBox.getChildren().add(this.songLabel);
+
+        this.currentSongSeconds = new SimpleDoubleProperty();
     }
 
     private void configureSlider() {
@@ -140,7 +157,6 @@ public class MusicPlayerController {
 
     public void initialize() {
         initializeComponents();
-        configurePlayButtonAction();
         configureSlider();
     }
 
