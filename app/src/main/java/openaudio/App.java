@@ -5,7 +5,7 @@ package openaudio;
 
 import openaudio.models.Song;
 import openaudio.controllers.MusicPlayerController;
-import openaudio.controllers.AlbumController;
+import openaudio.controllers.CollectionController;
 import openaudio.utils.Settings;
 import openaudio.views.FocusView;
 import javafx.application.Application;
@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private MusicPlayerController musicPlayer;
-    private AlbumController albumController;
     private FocusView focusView;
 
     @Override
@@ -27,13 +26,13 @@ public class App extends Application {
         this.musicPlayer = MusicPlayerController.getInstance();
         this.musicPlayer.initialize();
 
-        this.albumController = new AlbumController();
-        this.albumController.initialize(stage);
+        CollectionController.getInstance().initialize(stage);
 
         this.focusView = FocusView.getInstance();
         
         BorderPane borderPane = new BorderPane();
-        borderPane.setLeft(this.albumController.getVBox());
+        borderPane.setLeft(CollectionController.getInstance().getAlbumShelf());
+        borderPane.setRight(CollectionController.getInstance().getPlaylistShelf());
         borderPane.setBottom(this.musicPlayer.getVBox());
         borderPane.setCenter(this.focusView.getVBox());
         Scene scene = new Scene(borderPane, 640, 480);

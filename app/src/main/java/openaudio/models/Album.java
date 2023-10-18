@@ -36,7 +36,7 @@ public class Album implements SongCollection {
 
         for (int i = 0; i < allFiles.length; i++) {
             if (allFiles[i].endsWith(".mp3") || allFiles[i].endsWith(".wav")) {
-                songs.add(new Song(albumFolder + "/" + allFiles[i]));
+                songs.add(new Song(albumFolder + "/" + allFiles[i], i));
             }
         }
 

@@ -2,6 +2,8 @@ package openaudio.controllers;
 
 import openaudio.models.Song;
 import openaudio.controllers.QueueController;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Label;
