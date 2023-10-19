@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Scanner;
+import java.io.PrintWriter;
 
 public class Playlist implements SongCollection {
 
@@ -36,51 +38,32 @@ public class Playlist implements SongCollection {
 
     public void addSong(Song song) {
         this.songs.add(song);
+        updatePlaylistInfoFile();
+    }
 
-        // Write song file path to .playlistentry file
-        String musicFolder = Settings.getInstance().musicFolder;
-        String playlistFolder = musicFolder + "/" + this.filePath;
-        String playlistEntryFilePath = playlistFolder + "/" + song.getTitle() + ".playlistentry";
-        try {
-            java.io.PrintWriter writer = new java.io.PrintWriter(playlistEntryFilePath, "UTF-8");
-            writer.println(song.getFilePath());
-            writer.println(this.songs.size() - 1);
-            writer.close();
-        } catch (java.io.FileNotFoundException ex) {
-            System.out.println("Could not find file: " + playlistEntryFilePath);
-        } catch (java.io.UnsupportedEncodingException ex) {
-            System.out.println("Unsupported encoding: UTF-8");
-        }
+    public void removeSong(Song song) {
+        this.songs.remove(song);
+        updatePlaylistInfoFile();
     }
 
     public List<Song> loadSongs() {
         String musicFolder = Settings.getInstance().musicFolder;
         String playlistFolder = musicFolder + "/" + this.filePath;
-        String[] allFiles = new File(playlistFolder).list();
+        String playlistInfoPath = playlistFolder + "/" + this.title + ".playlistinfo";
 
         List<Song> songs = new ArrayList<Song>();
 
-        for (int i = 0; i < allFiles.length; i++) {
-            if (allFiles[i].endsWith(".playlistentry")) {
-                // Read song file path from .playlistentry file
-                String songFilePath = "";
-                int songOrder = 0;
-                try {
-                    java.util.Scanner scanner = new java.util.Scanner(new File(playlistFolder + "/" + allFiles[i]));
-                    songFilePath = scanner.nextLine();
-                    songOrder = Integer.parseInt(scanner.nextLine());
-                } catch (java.io.FileNotFoundException ex) {
-                    System.out.println("Could not find file: " + playlistFolder + "/" + allFiles[i]);
-                }
-                songs.add(new Song(songFilePath, songOrder));
+        try {
+            Scanner scanner = new Scanner(new File(playlistInfoPath));
+            // Iterate through lines in file
+            while (scanner.hasNextLine()) {
+                String songFilePath = scanner.nextLine();
+                Song song = new Song(songFilePath);
+                songs.add(song);
             }
+        } catch (java.io.FileNotFoundException ex) {
+            System.out.println("Could not find file: " + playlistInfoPath);
         }
-
-        Collections.sort(songs, new Comparator<Song>() {
-            public int compare(Song s1, Song s2) {
-                return s1.getOrder() - s2.getOrder();
-            }
-        });
 
         return songs;
     }
@@ -141,5 +124,39 @@ public class Playlist implements SongCollection {
 
     public Image getCoverImage() {
         return this.coverImage;
+    }
+
+    private void updatePlaylistInfoFile() {
+        String musicFolder = Settings.getInstance().musicFolder;
+        String playlistFolder = musicFolder + "/" + this.filePath;
+        String playlistInfoPath = playlistFolder + "/" + this.title + ".playlistinfo";
+        try {
+            // Open and clear the file
+            PrintWriter writer = new PrintWriter(playlistInfoPath, "UTF-8");
+            for (Song song : this.songs) {
+                writer.println(song.getFilePath());
+            }
+            writer.close();
+        } catch (java.io.FileNotFoundException ex) {
+            System.out.println("Could not find file: " + playlistInfoPath);
+        } catch (java.io.UnsupportedEncodingException ex) {
+            System.out.println("Unsupported encoding: UTF-8");
+        }
+    }
+
+    public void moveUp(Song song) {
+        int index = this.songs.indexOf(song);
+        if (index > 0) {
+            Collections.swap(this.songs, index, index - 1);
+        }
+        updatePlaylistInfoFile();
+    }
+
+    public void moveDown(Song song) {
+        int index = this.songs.indexOf(song);
+        if (index < this.songs.size() - 1) {
+            Collections.swap(this.songs, index, index + 1);
+        }
+        updatePlaylistInfoFile();
     }
 }

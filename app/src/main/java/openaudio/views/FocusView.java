@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.ArrayList;
 import javafx.scene.control.TextInputDialog;
 import java.util.Optional;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Screen;
 import openaudio.models.Playlist;
 
 
@@ -44,7 +47,11 @@ public class FocusView {
     }
 
     public void display() {
+        Screen screen = Screen.getPrimary();
+        double width = screen.getVisualBounds().getWidth();
+
         this.vBox.getChildren().clear();
+        int songCount = 0;
         for (Song song : this.songCollection.getSongs()) {
             HBox hBox = new HBox();
             Button songButton = new Button(song.getTitle());
@@ -55,13 +62,23 @@ public class FocusView {
             });
             hBox.getChildren().add(songButton);
 
-            Button addToQueueButton = new Button("Add to Queue");
+            Button addToQueueButton = new Button();
+            ImageView addToQueueView = new ImageView(new Image(getClass().getResourceAsStream("/img/add-to-queue.png")));
+            addToQueueView.setFitHeight(width / 120);
+            addToQueueView.setFitWidth(width / 120);
+            addToQueueButton.setGraphic(addToQueueView);
+
             addToQueueButton.setOnAction(event -> {
                 QueueController.getInstance().addUserSong(song);
             });
             hBox.getChildren().add(addToQueueButton);
 
-            Button addToPlaylistButton = new Button("Add to Playlist");
+            Button addToPlaylistButton = new Button();
+            ImageView addPlaylistView = new ImageView(new Image(getClass().getResourceAsStream("/img/add-to-playlist.png")));
+            addPlaylistView.setFitHeight(width / 120);
+            addPlaylistView.setFitWidth(width / 120);
+            addToPlaylistButton.setGraphic(addPlaylistView);
+
             addToPlaylistButton.setOnAction(event -> {
                 ArrayList<Playlist> playlists = CollectionController.getInstance().getPlaylists();
                 for (Playlist playlist : playlists) {
@@ -91,20 +108,49 @@ public class FocusView {
             });
             hBox.getChildren().add(addToPlaylistButton);
                 
+            // Move up button
+            if (songCount > 0) {
+                Button moveUpButton = new Button();
+                ImageView moveUpView = new ImageView(new Image(getClass().getResourceAsStream("/img/move-up.png")));
+                moveUpView.setFitHeight(width / 120);
+                moveUpView.setFitWidth(width / 120);
+                moveUpButton.setGraphic(moveUpView);
 
-            // Button moveUpButton = new Button("Move Up");
-            // moveUpButton.setOnAction(event -> {
-            //     this.songCollection.moveUp(song);
-            // });
-            // hBox.getChildren().add(moveUpButton);
+                moveUpButton.setOnAction(event -> {
+                    this.songCollection.moveUp(song);
+                    this.display();
+                });
+                hBox.getChildren().add(moveUpButton);
+            }
 
-            // Button moveDownButton = new Button("Move Down");
-            // moveDownButton.setOnAction(event -> {
-            //     this.songCollection.moveDown(song);
-            // });
-            // hBox.getChildren().add(moveDownButton);
+            // Move down button
+            if (songCount < this.songCollection.getSongs().size() - 1) {
+                Button moveDownButton = new Button();
+                ImageView moveDownView = new ImageView(new Image(getClass().getResourceAsStream("/img/move-down.png")));
+                moveDownView.setFitHeight(width / 120);
+                moveDownView.setFitWidth(width / 120);
+                moveDownButton.setGraphic(moveDownView);
+                
+                moveDownButton.setOnAction(event -> {
+                    this.songCollection.moveDown(song);
+                    this.display();
+                });
+                hBox.getChildren().add(moveDownButton);
+            }
+
+            // Remove from playlist button
+            if (this.songCollection instanceof Playlist) {
+                Button removeFromPlaylistButton = new Button("Remove from Playlist");
+                removeFromPlaylistButton.setOnAction(event -> {
+                    Playlist playlist = (Playlist) this.songCollection;
+                    playlist.removeSong(song);
+                    this.display();
+                });
+                hBox.getChildren().add(removeFromPlaylistButton);
+            }
 
             this.vBox.getChildren().add(hBox);
+            songCount++;
         }
     }
 }

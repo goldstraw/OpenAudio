@@ -5,7 +5,6 @@ import openaudio.models.Album;
 import openaudio.models.Playlist;
 import openaudio.views.FocusView;
 import openaudio.models.Song;
-import java.io.IOException;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
@@ -14,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.text.TextAlignment;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -47,17 +48,18 @@ public class CollectionController {
 
         for (int i = 0; i < folders.length; i++) {
             // Check if the folder is an album
-            String[] albumFiles = new File(musicFolder + "/" + folders[i]).list();
-            for (int j = 0; j < albumFiles.length; j++) {
-                if (albumFiles[j].endsWith(".mp3") || albumFiles[j].endsWith(".wav")) {
-                    albums.add(new Album(folders[i]));
+            String[] folderFiles = new File(musicFolder + "/" + folders[i]).list();
+            for (int j = 0; j < folderFiles.length; j++) {
+                if (folderFiles[j].endsWith(".mp3") || folderFiles[j].endsWith(".wav")) {
+                    Album newAlbum = new Album(folders[i]);
+                    albums.add(newAlbum);
                     break;
                 }
             }
 
             // Check if the folder is a playlist
-            for (int j = 0; j < albumFiles.length; j++) {
-                if (albumFiles[j].endsWith(".playlistentry")) {
+            for (int j = 0; j < folderFiles.length; j++) {
+                if (folderFiles[j].endsWith(".playlistinfo")) {
                     playlists.add(new Playlist(folders[i]));
                     break;
                 }
@@ -166,29 +168,25 @@ public class CollectionController {
 
     public void addPlaylist(Playlist playlist) {
         this.playlists.add(playlist);
-        // Create folder for playlist with .playlistentry extension
+        // Create folder for playlist with .playlistinfo extension
         String musicFolder = Settings.getInstance().musicFolder;
         String playlistFolder = musicFolder + "/" + playlist.getName();
         File file = new File(playlistFolder);
         file.mkdir();
 
-        // Create .playlistentry files
-        int order = 0;
-        for (Song song : playlist.getSongs()) {
-            try {
-                File playlistEntry = new File(playlistFolder + "/" + song.getTitle() + ".playlistentry");
-                playlistEntry.createNewFile();
-                // Write song file path and order to .playlistentry file
-                java.io.PrintWriter writer = new java.io.PrintWriter(playlistEntry, "UTF-8");
+        // Create .playlistinfo file
+        try {
+            File playlistInfo = new File(playlistFolder + "/" + playlist.getName() + ".playlistinfo");
+            playlistInfo.createNewFile();
+            // Write song file path and .playlistinfo file
+            PrintWriter writer = new PrintWriter(playlistInfo, "UTF-8");
+            for (Song song : playlist.getSongs()) {
                 writer.println(song.getFilePath());
-                writer.println(order);
-                writer.close();
-                order++;
-            } catch (IOException ex) {
-                System.out.println("Error creating playlist entry file");
             }
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("Error creating playlist info file");
         }
-
     }
 
 }

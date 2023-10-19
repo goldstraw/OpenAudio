@@ -1,13 +1,14 @@
 package openaudio.models;
 
-import java.io.File;
 import openaudio.utils.Settings;
+import java.io.File;
 import javafx.scene.image.Image;
 import java.util.List;
 import java.util.ArrayList;
 import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.io.PrintWriter;
 
 public class Album implements SongCollection {
 
@@ -22,6 +23,7 @@ public class Album implements SongCollection {
         this.title = filePath;
         this.artist = "Unknown";
         this.songs = loadSongs();
+        updateAlbumInfoFile();
 
         // Load the cover image
         this.coverImage = loadCoverImage();
@@ -30,21 +32,32 @@ public class Album implements SongCollection {
     public List<Song> loadSongs() {
         String musicFolder = Settings.getInstance().musicFolder;
         String albumFolder = musicFolder + "/" + this.filePath;
-        String[] allFiles = new File(albumFolder).list();
+        String albumInfoPath = albumFolder + "/" + this.filePath + ".albuminfo";
 
         List<Song> songs = new ArrayList<Song>();
 
-        for (int i = 0; i < allFiles.length; i++) {
-            if (allFiles[i].endsWith(".mp3") || allFiles[i].endsWith(".wav")) {
-                songs.add(new Song(albumFolder + "/" + allFiles[i], i));
+        try {
+            File albumInfo = new File(albumInfoPath);
+            if (!albumInfo.exists()) {
+                String[] allFiles = new File(albumFolder).list();
+                for (int i = 0; i < allFiles.length; i++) {
+                    if (allFiles[i].endsWith(".mp3") || allFiles[i].endsWith(".wav")) {
+                        Song song = new Song(albumFolder + "/" + allFiles[i]);
+                        songs.add(song);
+                    }
+                }
+            } else {
+                java.util.Scanner scanner = new java.util.Scanner(albumInfo);
+                // Iterate through lines in file
+                while (scanner.hasNextLine()) {
+                    String songFilePath = scanner.nextLine();
+                    Song song = new Song(songFilePath);
+                    songs.add(song);
+                }
             }
+        } catch (java.io.FileNotFoundException ex) {
+            System.out.println("Could not find file: " + albumInfoPath);
         }
-
-        Collections.sort(songs, new Comparator<Song>() {
-            public int compare(Song s1, Song s2) {
-                return s1.getTitle().compareTo(s2.getTitle());
-            }
-        });
 
         return songs;
     }
@@ -105,5 +118,39 @@ public class Album implements SongCollection {
 
     public Image getCoverImage() {
         return this.coverImage;
+    }
+
+    private void updateAlbumInfoFile() {
+        String musicFolder = Settings.getInstance().musicFolder;
+        String albumFolder = musicFolder + "/" + this.filePath;
+        String albumInfoPath = albumFolder + "/" + this.filePath + ".albuminfo";
+        try {
+            // Open and clear the file
+            PrintWriter writer = new PrintWriter(albumInfoPath, "UTF-8");
+            for (Song song : this.songs) {
+                writer.println(song.getFilePath());
+            }
+            writer.close();
+        } catch (java.io.FileNotFoundException ex) {
+            System.out.println("Could not find file: " + albumInfoPath);
+        } catch (java.io.UnsupportedEncodingException ex) {
+            System.out.println("Unsupported encoding: UTF-8");
+        }
+    }
+
+    public void moveUp(Song song) {
+        int index = this.songs.indexOf(song);
+        if (index > 0) {
+            Collections.swap(this.songs, index, index - 1);
+        }
+        updateAlbumInfoFile();
+    }
+
+    public void moveDown(Song song) {
+        int index = this.songs.indexOf(song);
+        if (index < this.songs.size() - 1) {
+            Collections.swap(this.songs, index, index + 1);
+        }
+        updateAlbumInfoFile();
     }
 }

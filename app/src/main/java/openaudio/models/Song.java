@@ -9,9 +9,8 @@ public class Song {
     private String album;
     private float duration; // in seconds
     private String filePath;
-    private int order;
 
-    public Song(String filePath, int order) {
+    public Song(String filePath) {
         this.filePath = filePath;
         // Read end of file path to get title
         String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
@@ -20,7 +19,6 @@ public class Song {
         this.artist = "Unknown";
         this.album = "Unknown";
         this.duration = 0;
-        this.order = order;
     }
 
     public Song(String title, String artist, String album, float duration, String filePath) {
@@ -57,9 +55,5 @@ public class Song {
 
     public float getDuration() {
         return duration;
-    }
-
-    public int getOrder() {
-        return order;
     }
 }

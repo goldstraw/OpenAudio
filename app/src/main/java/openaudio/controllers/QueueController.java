@@ -75,4 +75,19 @@ public class QueueController {
     public void addSongToHistory(Song song) {
         this.history.add(song);
     }
+
+    public void debugPrint() {
+        System.out.println("User Queue:");
+        for (Song song : this.userQueue) {
+            System.out.println(song.getTitle());
+        }
+        System.out.println("Collection Queue:");
+        for (Song song : this.collectionQueue) {
+            System.out.println(song.getTitle());
+        }
+        System.out.println("History:");
+        for (Song song : this.history) {
+            System.out.println(song.getTitle());
+        }
+    }
 }

@@ -102,6 +102,7 @@ public class MusicPlayerController {
                 playPauseView.setImage(playImage);
                 this.mediaPlayer.pause();
             }
+            QueueController.getInstance().debugPrint();
         });
 
         this.nextButton = new Button("Next");

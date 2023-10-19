@@ -12,6 +12,6 @@ public interface SongCollection {
     String getName();
     String getArtist();
     Image getCoverImage();
-    // void moveUp(Song song);
-    // void moveDown(Song song);
+    void moveUp(Song song);
+    void moveDown(Song song);
 }
