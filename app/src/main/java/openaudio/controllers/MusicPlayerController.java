@@ -181,10 +181,15 @@ public class MusicPlayerController {
                         int minutes = (int) this.currentSongSeconds.get() / 60;
                         int seconds = (int) this.currentSongSeconds.get() % 60;
                         String timeElapsed = String.format("%d:%02d", minutes, seconds);
-                        int totalMinutes = (int) this.mediaPlayer.getMedia().getDuration().toSeconds() / 60;
-                        int totalSeconds = (int) this.mediaPlayer.getMedia().getDuration().toSeconds() % 60;
-                        String totalTime = String.format("%d:%02d", totalMinutes, totalSeconds);
-                        this.timeElapsedLabel.setText(timeElapsed + " / " + totalTime);
+                        if (this.mediaPlayer == null) {
+                            this.timeElapsedLabel.setText(timeElapsed + " / 0:00");
+                            return;
+                        } else {
+                            int totalMinutes = (int) this.mediaPlayer.getMedia().getDuration().toSeconds() / 60;
+                            int totalSeconds = (int) this.mediaPlayer.getMedia().getDuration().toSeconds() % 60;
+                            String totalTime = String.format("%d:%02d", totalMinutes, totalSeconds);
+                            this.timeElapsedLabel.setText(timeElapsed + " / " + totalTime);
+                        }
                     }
                 }
             ),

@@ -36,6 +36,7 @@ public class App extends Application {
         borderPane.setBottom(this.musicPlayer.getVBox());
         borderPane.setCenter(this.focusView.getVBox());
         Scene scene = new Scene(borderPane, 640, 480);
+        scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

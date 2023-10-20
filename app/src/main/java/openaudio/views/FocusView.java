@@ -67,6 +67,7 @@ public class FocusView {
                 QueueController.getInstance().setCollection(remainingSongs);
                 QueueController.getInstance().clearFutureQueue();
             });
+            songButton.getStyleClass().add("song-button");
             hBox.getChildren().add(songButton);
 
             Button addToQueueButton = new Button();
@@ -78,6 +79,7 @@ public class FocusView {
             addToQueueButton.setOnAction(event -> {
                 QueueController.getInstance().addUserSong(song);
             });
+            addToQueueButton.getStyleClass().add("add-to-queue-button");
             hBox.getChildren().add(addToQueueButton);
 
             Button addToPlaylistButton = new Button();
@@ -113,6 +115,7 @@ public class FocusView {
                 });
                 hBox.getChildren().add(newPlaylistButton);
             });
+            addToPlaylistButton.getStyleClass().add("add-to-playlist-button");
             hBox.getChildren().add(addToPlaylistButton);
                 
             // Move up button
@@ -127,6 +130,7 @@ public class FocusView {
                     this.songCollection.moveUp(song);
                     this.display();
                 });
+                moveUpButton.getStyleClass().add("move-up-button");
                 hBox.getChildren().add(moveUpButton);
             }
 
@@ -142,6 +146,7 @@ public class FocusView {
                     this.songCollection.moveDown(song);
                     this.display();
                 });
+                moveDownButton.getStyleClass().add("move-down-button");
                 hBox.getChildren().add(moveDownButton);
             }
 
