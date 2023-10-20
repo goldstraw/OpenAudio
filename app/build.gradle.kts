@@ -29,6 +29,9 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
+
+    // https://mavenlibs.com/maven/dependency/com.mpatric/mp3agic
+    implementation("com.mpatric:mp3agic:0.9.1")
 }
 
 application {

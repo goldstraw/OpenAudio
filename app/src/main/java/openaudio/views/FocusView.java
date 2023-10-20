@@ -52,6 +52,12 @@ public class FocusView {
 
         this.vBox.getChildren().clear();
         int songCount = 0;
+
+        Image addToQueueImage = new Image(getClass().getResourceAsStream("/img/add-to-queue.png"));
+        Image addPlaylistImage = new Image(getClass().getResourceAsStream("/img/add-to-playlist.png"));
+        Image moveUpImage = new Image(getClass().getResourceAsStream("/img/move-up.png"));
+        Image moveDownImage = new Image(getClass().getResourceAsStream("/img/move-down.png"));
+
         for (Song song : this.songCollection.getSongs()) {
             HBox hBox = new HBox();
             Button songButton = new Button(song.getTitle());
@@ -59,11 +65,12 @@ public class FocusView {
                 MusicPlayerController.getInstance().playSong(song);
                 List<Song> remainingSongs = this.songCollection.getRemainingSongs(song);
                 QueueController.getInstance().setCollection(remainingSongs);
+                QueueController.getInstance().clearFutureQueue();
             });
             hBox.getChildren().add(songButton);
 
             Button addToQueueButton = new Button();
-            ImageView addToQueueView = new ImageView(new Image(getClass().getResourceAsStream("/img/add-to-queue.png")));
+            ImageView addToQueueView = new ImageView(addToQueueImage);
             addToQueueView.setFitHeight(width / 120);
             addToQueueView.setFitWidth(width / 120);
             addToQueueButton.setGraphic(addToQueueView);
@@ -74,7 +81,7 @@ public class FocusView {
             hBox.getChildren().add(addToQueueButton);
 
             Button addToPlaylistButton = new Button();
-            ImageView addPlaylistView = new ImageView(new Image(getClass().getResourceAsStream("/img/add-to-playlist.png")));
+            ImageView addPlaylistView = new ImageView(addPlaylistImage);
             addPlaylistView.setFitHeight(width / 120);
             addPlaylistView.setFitWidth(width / 120);
             addToPlaylistButton.setGraphic(addPlaylistView);
@@ -111,7 +118,7 @@ public class FocusView {
             // Move up button
             if (songCount > 0) {
                 Button moveUpButton = new Button();
-                ImageView moveUpView = new ImageView(new Image(getClass().getResourceAsStream("/img/move-up.png")));
+                ImageView moveUpView = new ImageView(moveUpImage);
                 moveUpView.setFitHeight(width / 120);
                 moveUpView.setFitWidth(width / 120);
                 moveUpButton.setGraphic(moveUpView);
@@ -126,7 +133,7 @@ public class FocusView {
             // Move down button
             if (songCount < this.songCollection.getSongs().size() - 1) {
                 Button moveDownButton = new Button();
-                ImageView moveDownView = new ImageView(new Image(getClass().getResourceAsStream("/img/move-down.png")));
+                ImageView moveDownView = new ImageView(moveDownImage);
                 moveDownView.setFitHeight(width / 120);
                 moveDownView.setFitWidth(width / 120);
                 moveDownButton.setGraphic(moveDownView);

@@ -9,6 +9,7 @@ import java.util.List;
 public class QueueController {
 
     private LinkedList<Song> history = new LinkedList<Song>();
+    private LinkedList<Song> futureQueue = new LinkedList<Song>();
     private LinkedList<Song> userQueue = new LinkedList<Song>();
     private LinkedList<Song> collectionQueue = new LinkedList<Song>();
     private LinkedList<Song> recommendationQueue = new LinkedList<Song>();
@@ -54,7 +55,9 @@ public class QueueController {
     }
 
     public Song getNextSong() {
-        if (this.userQueue.size() > 0) {
+        if (this.futureQueue.size() > 0) {
+            return this.futureQueue.removeFirst();
+        } else if (this.userQueue.size() > 0) {
             return this.userQueue.removeFirst();
         } else if (this.collectionQueue.size() > 0) {
             return this.collectionQueue.removeFirst();
@@ -76,18 +79,11 @@ public class QueueController {
         this.history.add(song);
     }
 
-    public void debugPrint() {
-        System.out.println("User Queue:");
-        for (Song song : this.userQueue) {
-            System.out.println(song.getTitle());
-        }
-        System.out.println("Collection Queue:");
-        for (Song song : this.collectionQueue) {
-            System.out.println(song.getTitle());
-        }
-        System.out.println("History:");
-        for (Song song : this.history) {
-            System.out.println(song.getTitle());
-        }
+    public void addFutureSong(Song song) {
+        this.futureQueue.addFirst(song);
+    }
+
+    public void clearFutureQueue() {
+        this.futureQueue.clear();
     }
 }

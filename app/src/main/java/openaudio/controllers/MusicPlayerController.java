@@ -12,6 +12,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
@@ -29,7 +30,13 @@ public class MusicPlayerController {
     private Button playButton;
     private Button nextButton;
     private Button previousButton;
+    private HBox songInfo;
     private Label songLabel;
+    private Label albumLabel;
+    private Label artistLabel;
+    private Label yearLabel;
+    private Label genreLabel;
+    private Label timeElapsedLabel;
     private DoubleProperty currentSongSeconds;
     private MediaPlayer mediaPlayer;
     private AtomicBoolean userIsDraggingSlider = new AtomicBoolean(false);
@@ -58,6 +65,10 @@ public class MusicPlayerController {
             this.mediaPlayer.stop();
         }
         this.songLabel.setText(song.getTitle());
+        this.albumLabel.setText(song.getAlbum());
+        this.artistLabel.setText(song.getArtist());
+        this.yearLabel.setText(song.getYear());
+        this.genreLabel.setText(song.getGenre());
         File file = new File(song.getFilePath());
         this.mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
 
@@ -102,7 +113,6 @@ public class MusicPlayerController {
                 playPauseView.setImage(playImage);
                 this.mediaPlayer.pause();
             }
-            QueueController.getInstance().debugPrint();
         });
 
         this.nextButton = new Button("Next");
@@ -116,7 +126,7 @@ public class MusicPlayerController {
         vBox.getChildren().add(this.previousButton);
         this.previousButton.setOnAction(event -> {
             Song previousSong = QueueController.getInstance().getPreviousSong();
-            QueueController.getInstance().addUserSongToFront(this.currentSong);
+            QueueController.getInstance().addFutureSong(this.currentSong);
             if (previousSong != null) {
                 playSong(previousSong);
             }
@@ -125,8 +135,27 @@ public class MusicPlayerController {
         this.slider = new Slider();
         vBox.getChildren().add(this.slider);
 
-        this.songLabel = new Label("OK Computer by Radiohead");
-        vBox.getChildren().add(this.songLabel);
+        this.songInfo = new HBox();
+
+        this.songLabel = new Label("");
+        this.songInfo.getChildren().add(this.songLabel);
+
+        this.albumLabel = new Label("");
+        this.songInfo.getChildren().add(this.albumLabel);
+
+        this.artistLabel = new Label("");
+        this.songInfo.getChildren().add(this.artistLabel);
+
+        this.yearLabel = new Label("");
+        this.songInfo.getChildren().add(this.yearLabel);
+
+        this.genreLabel = new Label("");
+        this.songInfo.getChildren().add(this.genreLabel);
+
+        this.vBox.getChildren().add(this.songInfo);
+
+        this.timeElapsedLabel = new Label("0:00 / 0:00");
+        this.vBox.getChildren().add(this.timeElapsedLabel);
 
         this.currentSongSeconds = new SimpleDoubleProperty();
     }
@@ -149,6 +178,13 @@ public class MusicPlayerController {
                 event -> {
                     if (!userIsDraggingSlider.get()) {
                         slider.setValue(this.currentSongSeconds.get());
+                        int minutes = (int) this.currentSongSeconds.get() / 60;
+                        int seconds = (int) this.currentSongSeconds.get() % 60;
+                        String timeElapsed = String.format("%d:%02d", minutes, seconds);
+                        int totalMinutes = (int) this.mediaPlayer.getMedia().getDuration().toSeconds() / 60;
+                        int totalSeconds = (int) this.mediaPlayer.getMedia().getDuration().toSeconds() % 60;
+                        String totalTime = String.format("%d:%02d", totalMinutes, totalSeconds);
+                        this.timeElapsedLabel.setText(timeElapsed + " / " + totalTime);
                     }
                 }
             ),

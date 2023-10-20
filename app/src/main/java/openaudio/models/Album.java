@@ -46,6 +46,14 @@ public class Album implements SongCollection {
                         songs.add(song);
                     }
                 }
+
+                // Sort songs by track attribute
+                Collections.sort(songs, new Comparator<Song>() {
+                    @Override
+                    public int compare(Song song1, Song song2) {
+                        return song1.getTrack().compareTo(song2.getTrack());
+                    }
+                });
             } else {
                 java.util.Scanner scanner = new java.util.Scanner(albumInfo);
                 // Iterate through lines in file

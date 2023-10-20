@@ -49,6 +49,9 @@ public class CollectionController {
         for (int i = 0; i < folders.length; i++) {
             // Check if the folder is an album
             String[] folderFiles = new File(musicFolder + "/" + folders[i]).list();
+            if (folderFiles == null) {
+                continue;
+            }
             for (int j = 0; j < folderFiles.length; j++) {
                 if (folderFiles[j].endsWith(".mp3") || folderFiles[j].endsWith(".wav")) {
                     Album newAlbum = new Album(folders[i]);
