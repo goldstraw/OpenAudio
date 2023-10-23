@@ -63,8 +63,8 @@ public class FocusView {
         // Title
         HBox titleBox = new HBox();
         ImageView albumCover = new ImageView(this.songCollection.getCoverImage());
-        albumCover.fitWidthProperty().bind(this.vBox.widthProperty().divide(6));
-        albumCover.fitHeightProperty().bind(this.vBox.widthProperty().divide(6));
+        albumCover.fitWidthProperty().bind(this.vBox.heightProperty().divide(6));
+        albumCover.fitHeightProperty().bind(this.vBox.heightProperty().divide(6));
         albumCover.getStyleClass().add("album-cover");
         titleBox.getChildren().add(albumCover);
 

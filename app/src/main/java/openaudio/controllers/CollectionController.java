@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.text.TextAlignment;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -74,10 +75,11 @@ public class CollectionController {
     }
 
     private void createAlbumShelf() {
+        VBox scrollVBox = new VBox();
         for (Album album : albums) {
             ImageView albumCover = new ImageView(album.getCoverImage());
-            albumCover.setFitHeight(50);
-            albumCover.setFitWidth(50);
+            albumCover.fitWidthProperty().bind(this.albumShelf.heightProperty().divide(12));
+            albumCover.fitHeightProperty().bind(this.albumShelf.heightProperty().divide(12));
             albumCover.setPreserveRatio(true);
 
             //Create an overlay effect when mouse hovers over the album cover
@@ -98,15 +100,18 @@ public class CollectionController {
             VBox albumBox = new VBox(albumCover, albumLabel);
             albumBox.setAlignment(Pos.CENTER);
 
-            this.albumShelf.getChildren().add(albumBox);
+            scrollVBox.getChildren().add(albumBox);
         }
+        ScrollPane scrollPane = new ScrollPane(scrollVBox);
+        this.albumShelf.getChildren().add(scrollPane);
     }
 
     private void createPlaylistShelf() {
+        VBox scrollVBox = new VBox();
         for (Playlist playlist : playlists) {
             ImageView playlistCover = new ImageView(playlist.getCoverImage());
-            playlistCover.setFitHeight(50);
-            playlistCover.setFitWidth(50);
+            playlistCover.fitWidthProperty().bind(this.playlistShelf.heightProperty().divide(12));
+            playlistCover.fitHeightProperty().bind(this.playlistShelf.heightProperty().divide(12));
             playlistCover.setPreserveRatio(true);
 
             //Create an overlay effect when mouse hovers over the album cover
@@ -127,8 +132,10 @@ public class CollectionController {
             VBox playlistBox = new VBox(playlistCover, playlistLabel);
             playlistBox.setAlignment(Pos.CENTER);
 
-            this.playlistShelf.getChildren().add(playlistBox);
+            scrollVBox.getChildren().add(playlistBox);
         }
+        ScrollPane scrollPane = new ScrollPane(scrollVBox);
+        this.playlistShelf.getChildren().add(scrollPane);
     }
 
     public void initialize(Stage primaryStage) {

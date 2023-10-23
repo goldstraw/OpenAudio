@@ -110,6 +110,9 @@ public class MusicPlayerController {
 
         vBox.getChildren().add(this.previousButton);
         this.previousButton.setOnAction(event -> {
+            if (this.mediaPlayer == null) {
+                return;
+            }
             Song previousSong = QueueController.getInstance().getPreviousSong();
             QueueController.getInstance().addFutureSong(this.currentSong);
             if (previousSong != null) {
@@ -126,6 +129,9 @@ public class MusicPlayerController {
         this.playButton.setGraphic(playPauseView);
 
         this.playButton.setOnAction(event -> {
+            if (this.mediaPlayer == null) {
+                return;
+            }
             if (playPauseView.getImage().equals(playImage)) {
                 playPauseView.setImage(pauseImage);
                 this.mediaPlayer.play();
@@ -145,6 +151,9 @@ public class MusicPlayerController {
 
         vBox.getChildren().add(this.nextButton);
         this.nextButton.setOnAction(event -> {
+            if (this.mediaPlayer == null) {
+                return;
+            }
             QueueController.getInstance().addSongToHistory(this.currentSong);
             playSong(QueueController.getInstance().getNextSong());
         });
