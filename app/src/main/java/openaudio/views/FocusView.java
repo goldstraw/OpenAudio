@@ -5,7 +5,9 @@ import openaudio.models.Song;
 import openaudio.controllers.CollectionController;
 import openaudio.controllers.MusicPlayerController;
 import openaudio.controllers.QueueController;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Pos;
@@ -57,6 +59,31 @@ public class FocusView {
         Image addPlaylistImage = new Image(getClass().getResourceAsStream("/img/add-to-playlist.png"));
         Image moveUpImage = new Image(getClass().getResourceAsStream("/img/move-up.png"));
         Image moveDownImage = new Image(getClass().getResourceAsStream("/img/move-down.png"));
+
+        // Title
+        HBox titleBox = new HBox();
+        ImageView albumCover = new ImageView(this.songCollection.getCoverImage());
+        albumCover.fitWidthProperty().bind(this.vBox.widthProperty().divide(6));
+        albumCover.fitHeightProperty().bind(this.vBox.widthProperty().divide(6));
+        albumCover.getStyleClass().add("album-cover");
+        titleBox.getChildren().add(albumCover);
+
+        VBox titleBox2 = new VBox();
+
+        Label title = new Label(this.songCollection.getName());
+        title.getStyleClass().add("title");
+        titleBox2.getChildren().add(title);
+
+        Label artistLabel = new Label(this.songCollection.getArtist());
+        artistLabel.getStyleClass().add("artist-label");
+        titleBox2.getChildren().add(artistLabel);
+
+        titleBox.getChildren().add(titleBox2);
+        titleBox.getStyleClass().add("title-box");
+
+        this.vBox.getChildren().add(titleBox);
+
+        VBox songVBox = new VBox();
 
         for (Song song : this.songCollection.getSongs()) {
             HBox hBox = new HBox();
@@ -161,8 +188,14 @@ public class FocusView {
                 hBox.getChildren().add(removeFromPlaylistButton);
             }
 
-            this.vBox.getChildren().add(hBox);
+            songVBox.getChildren().add(hBox);
+
             songCount++;
         }
+
+        ScrollPane scrollPane = new ScrollPane(songVBox);
+        scrollPane.getStyleClass().add("scroll-pane");
+
+        this.vBox.getChildren().add(scrollPane);
     }
 }

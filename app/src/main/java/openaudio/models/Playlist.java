@@ -15,6 +15,7 @@ public class Playlist implements SongCollection {
 
     private String title;
     private String artist;
+    private String year;
     private String filePath;
     private List<Song> songs;
     private Image coverImage;
@@ -22,7 +23,8 @@ public class Playlist implements SongCollection {
     public Playlist(String filePath) {
         this.filePath = filePath;
         this.title = filePath;
-        this.artist = "User";
+        this.artist = "You";
+        this.year = "";
 
         // Create playlist folder if it doesn't exist
         String musicFolder = Settings.getInstance().musicFolder;

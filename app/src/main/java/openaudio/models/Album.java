@@ -21,8 +21,8 @@ public class Album implements SongCollection {
     public Album(String filePath) {
         this.filePath = filePath;
         this.title = filePath;
-        this.artist = "Unknown";
         this.songs = loadSongs();
+        this.artist = this.songs.get(0).getArtist();
         updateAlbumInfoFile();
 
         // Load the cover image

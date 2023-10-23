@@ -47,6 +47,8 @@ public class MusicPlayerController {
     
     private final Image playImage = new Image(getClass().getResourceAsStream("/img/play-icon.png"));
     private final Image pauseImage = new Image(getClass().getResourceAsStream("/img/pause-icon.png"));
+    private final Image nextImage = new Image(getClass().getResourceAsStream("/img/step-forward-icon.png"));
+    private final Image previousImage = new Image(getClass().getResourceAsStream("/img/step-backward-icon.png"));
 
     private static MusicPlayerController instance = null;
 
@@ -98,8 +100,26 @@ public class MusicPlayerController {
         this.vBox = new VBox();
         this.vBox.setAlignment(Pos.BOTTOM_CENTER);
 
+        HBox playerHBox = new HBox();
+
+        this.previousButton = new Button();
+        ImageView previousView = new ImageView(this.previousImage);
+        previousView.setFitHeight(width / 80);
+        previousView.setFitWidth(width / 80);
+        this.previousButton.setGraphic(previousView);
+
+        vBox.getChildren().add(this.previousButton);
+        this.previousButton.setOnAction(event -> {
+            Song previousSong = QueueController.getInstance().getPreviousSong();
+            QueueController.getInstance().addFutureSong(this.currentSong);
+            if (previousSong != null) {
+                playSong(previousSong);
+            }
+        });
+        playerHBox.getChildren().add(this.previousButton);
+
         this.playButton = new Button();
-        vBox.getChildren().add(this.playButton);
+
         this.playPauseView = new ImageView(this.playImage);
         this.playPauseView.setFitHeight(width / 80);
         this.playPauseView.setFitWidth(width / 80);
@@ -115,22 +135,23 @@ public class MusicPlayerController {
             }
         });
 
-        this.nextButton = new Button("Next");
+        playerHBox.getChildren().add(this.playButton);
+
+        this.nextButton = new Button();
+        ImageView nextView = new ImageView(this.nextImage);
+        nextView.setFitHeight(width / 80);
+        nextView.setFitWidth(width / 80);
+        this.nextButton.setGraphic(nextView);
+
         vBox.getChildren().add(this.nextButton);
         this.nextButton.setOnAction(event -> {
             QueueController.getInstance().addSongToHistory(this.currentSong);
             playSong(QueueController.getInstance().getNextSong());
         });
+        playerHBox.getChildren().add(this.nextButton);
 
-        this.previousButton = new Button("Previous");
-        vBox.getChildren().add(this.previousButton);
-        this.previousButton.setOnAction(event -> {
-            Song previousSong = QueueController.getInstance().getPreviousSong();
-            QueueController.getInstance().addFutureSong(this.currentSong);
-            if (previousSong != null) {
-                playSong(previousSong);
-            }
-        });
+        playerHBox.getStyleClass().add("player-hbox");
+        this.vBox.getChildren().add(playerHBox);
 
         this.slider = new Slider();
         vBox.getChildren().add(this.slider);
