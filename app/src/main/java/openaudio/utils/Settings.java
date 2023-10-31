@@ -45,7 +45,7 @@ public class Settings {
 
     public void chooseDirectory(Stage primaryStage, Button chooseDirButton) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Choose Your Music Directory");
+        directoryChooser.setTitle("Choose Music Directory");
 
         File selectedDirectory = directoryChooser.showDialog(primaryStage);
 

@@ -88,7 +88,7 @@ public class Playlist implements SongCollection {
             }
         }
 
-        return null;
+        return new Image(getClass().getResourceAsStream("/img/404.png"));
     }
 
     public List<Song> getRemainingSongs(Song currentSong) {
