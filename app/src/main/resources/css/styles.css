@@ -21,7 +21,7 @@
     -fx-text-fill: #ffffff;
 }
 
-.add-to-queue-button {
+.generic-button {
     -fx-background-color: #ffffff;
     -fx-background-radius: 8;
     -fx-border-color: #000000;
@@ -30,62 +30,11 @@
     -fx-padding: 10 20 10 20;
 }
 
-.add-to-queue-button:hover {
+.generic-button:hover {
     -fx-background-color: #aaaaaa;
 }
 
-.add-to-queue-button:pressed {
-    -fx-background-color: #888888;
-}
-
-.add-to-playlist-button {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 8;
-    -fx-border-color: #000000;
-    -fx-border-radius: 8;
-    -fx-border-width: 0 0 1 0;
-    -fx-padding: 10 20 10 20;
-}
-
-.add-to-playlist-button:hover {
-    -fx-background-color: #aaaaaa;
-}
-
-.add-to-playlist-button:pressed {
-    -fx-background-color: #888888;
-}
-
-.move-up-button {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 8;
-    -fx-border-color: #000000;
-    -fx-border-radius: 8;
-    -fx-border-width: 0 0 1 0;
-    -fx-padding: 10 20 10 20;
-}
-
-.move-up-button:hover {
-    -fx-background-color: #aaaaaa;
-}
-
-.move-up-button:pressed {
-    -fx-background-color: #888888;
-}
-
-.move-down-button {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 8;
-    -fx-border-color: #000000;
-    -fx-border-radius: 8;
-    -fx-border-width: 0 0 1 0;
-    -fx-padding: 10 20 10 20;
-}
-
-.move-down-button:hover {
-    -fx-background-color: #aaaaaa;
-}
-
-.move-down-button:pressed {
+.generic-button:pressed {
     -fx-background-color: #888888;
 }
 

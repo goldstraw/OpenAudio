@@ -54,20 +54,19 @@ public class Album implements SongCollection {
                         String s1 = song1.getTrack();
                         String s2 = song2.getTrack();
 
-                        if(s1.length()<s2.length()){
+                        if(s1.length() < s2.length()){
                             return s2.length() - s1.length();
                         }
-                        else if(s1.length()>s2.length()){
+                        else if(s1.length() > s2.length()){
                             return s1.length() - s2.length();
                         }
-                        for (int i = 0; i < s1.length() && i< s2.length(); i++) {
-                            if(s1.charAt(i) == s2.charAt(i)){
+                        for (int i = 0; i < s1.length() && i < s2.length(); i++) {
+                            if (s1.charAt(i) == s2.charAt(i)) {
                                 //System.out.println("Equal");
                                 continue;
-                            }
-                            else{
+                            } else {
                                 return s1.charAt(i) - s2.charAt(i);
-                            }   
+                            }
                         }
                         return 0;
                     }
