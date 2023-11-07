@@ -6,6 +6,7 @@ import openaudio.models.Playlist;
 import openaudio.views.FocusView;
 import openaudio.models.Song;
 import javafx.stage.Stage;
+import javafx.stage.Screen;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Set;
 
 
 public class CollectionController {
@@ -78,8 +80,10 @@ public class CollectionController {
         VBox scrollVBox = new VBox();
         for (Album album : albums) {
             ImageView albumCover = new ImageView(album.getCoverImage());
-            albumCover.fitWidthProperty().bind(this.albumShelf.heightProperty().divide(12));
-            albumCover.fitHeightProperty().bind(this.albumShelf.heightProperty().divide(12));
+            Screen screen = Screen.getPrimary();
+            double height = screen.getVisualBounds().getHeight();
+            albumCover.setFitHeight(height / 12);
+            albumCover.setFitWidth(height / 12);
             albumCover.setPreserveRatio(true);
 
             //Create an overlay effect when mouse hovers over the album cover
@@ -120,7 +124,15 @@ public class CollectionController {
 
             // Event Listener for MouseClick
             playlistCover.setOnMouseClicked(e -> {
-                FocusView.getInstance().setSongCollection(playlist);
+                Set<Song> playlistContenders = FocusView.getInstance().getPlaylistContenders();
+                if (playlistContenders.size() > 0) {
+                    for (Song playlistContender : playlistContenders) {
+                        playlist.addSong(playlistContender);
+                    }
+                    FocusView.getInstance().clearPlaylistContenders();
+                } else {
+                    FocusView.getInstance().setSongCollection(playlist);
+                }
             });
 
             //Create Label for the album name
