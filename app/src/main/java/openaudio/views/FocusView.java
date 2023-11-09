@@ -6,6 +6,11 @@ import openaudio.controllers.CollectionController;
 import openaudio.controllers.MusicPlayerController;
 import openaudio.controllers.QueueController;
 import openaudio.components.AddToPlaylistButton;
+import openaudio.components.AddToQueueButton;
+import openaudio.components.SongButton;
+import openaudio.components.MoveUpButton;
+import openaudio.components.MoveDownButton;
+import openaudio.components.RemoveFromPlaylistButton;
 import openaudio.App;
 import javafx.stage.Stage;
 import javafx.scene.layout.FlowPane;
@@ -84,11 +89,6 @@ public class FocusView {
         this.vBox.getChildren().clear();
         int songCount = 0;
 
-        Image addToQueueImage = new Image(getClass().getResourceAsStream("/img/add-to-queue.png"));
-        Image addPlaylistImage = new Image(getClass().getResourceAsStream("/img/add-to-playlist.png"));
-        Image moveUpImage = new Image(getClass().getResourceAsStream("/img/move-up.png"));
-        Image moveDownImage = new Image(getClass().getResourceAsStream("/img/move-down.png"));
-        Image removeImage = new Image(getClass().getResourceAsStream("/img/remove-icon.png"));
         Image moveImage = new Image(getClass().getResourceAsStream("/img/arrow-move-icon.png"));
 
         // Title
@@ -125,28 +125,9 @@ public class FocusView {
         for (Song song : this.songCollection.getSongs()) {
             VBox songVBox = new VBox();
             HBox hBox = new HBox();
-            Button songButton = new Button(song.getTitle());
-            songButton.setOnAction(event -> {
-                MusicPlayerController.getInstance().playSong(song);
-                List<Song> remainingSongs = this.songCollection.getRemainingSongs(song);
-                QueueController.getInstance().setCollection(remainingSongs);
-                QueueController.getInstance().clearFutureQueue();
-            });
-            songButton.getStyleClass().add("song-button");
-            songVBox.getChildren().add(songButton);
+            songVBox.getChildren().add(new SongButton(song, this.songCollection));
 
-            Button addToQueueButton = new Button();
-            ImageView addToQueueView = new ImageView(addToQueueImage);
-            addToQueueView.setFitHeight(width / 120);
-            addToQueueView.setFitWidth(width / 120);
-            addToQueueButton.setGraphic(addToQueueView);
-
-            addToQueueButton.setOnAction(event -> {
-                QueueController.getInstance().addUserSong(song);
-            });
-            addToQueueButton.getStyleClass().add("generic-button");
-            addToQueueButton.getStyleClass().add("grey-bg");
-
+            AddToQueueButton addToQueueButton = new AddToQueueButton(song);
             hBox.getChildren().add(addToQueueButton);
             songVBox.getChildren().add(hBox);
 
@@ -157,52 +138,19 @@ public class FocusView {
                 // Move up button
                 HBox moveButtonsHBox = new HBox();
                 if (songCount > 0 && this.moving) {
-                    Button moveUpButton = new Button();
-                    ImageView moveUpView = new ImageView(moveUpImage);
-                    moveUpView.setFitHeight(width / 120);
-                    moveUpView.setFitWidth(width / 120);
-                    moveUpButton.setGraphic(moveUpView);
-
-                    moveUpButton.setOnAction(event -> {
-                        this.songCollection.moveUp(song);
-                        this.display();
-                    });
-                    moveUpButton.getStyleClass().add("generic-button");
-                    moveUpButton.getStyleClass().add("grey-bg");
+                    MoveUpButton moveUpButton = new MoveUpButton(song, this.songCollection);
                     moveButtonsHBox.getChildren().add(moveUpButton);
                 }
 
                 // Move down button
                 if (songCount < this.songCollection.getSongs().size() - 1 && this.moving) {
-                    Button moveDownButton = new Button();
-                    ImageView moveDownView = new ImageView(moveDownImage);
-                    moveDownView.setFitHeight(width / 120);
-                    moveDownView.setFitWidth(width / 120);
-                    moveDownButton.setGraphic(moveDownView);
-                    
-                    moveDownButton.setOnAction(event -> {
-                        this.songCollection.moveDown(song);
-                        this.display();
-                    });
-                    moveDownButton.getStyleClass().add("generic-button");
-                    moveDownButton.getStyleClass().add("grey-bg");
+                    MoveDownButton moveDownButton = new MoveDownButton(song, this.songCollection);
                     moveButtonsHBox.getChildren().add(moveDownButton);
                 }
                 songVBox.getChildren().add(moveButtonsHBox);
             } else {
-                Button removeFromPlaylistButton = new Button();
-
-                ImageView removeView = new ImageView(removeImage);
-                removeView.setFitHeight(width / 120);
-                removeView.setFitWidth(width / 120);
-                removeFromPlaylistButton.setGraphic(removeView);
-                removeFromPlaylistButton.setOnAction(event -> {
-                    Playlist playlist = (Playlist) this.songCollection;
-                    playlist.removeSong(song);
-                    this.display();
-                });
-                removeFromPlaylistButton.getStyleClass().add("generic-button");
-                hBox.getChildren().add(removeFromPlaylistButton);
+                RemoveFromPlaylistButton rfmButton = new RemoveFromPlaylistButton(song, this.songCollection);
+                hBox.getChildren().add(rfmButton);
             }
             
             flowPane.getChildren().add(songVBox);
