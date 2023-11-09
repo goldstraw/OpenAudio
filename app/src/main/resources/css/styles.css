@@ -9,6 +9,9 @@
     -fx-padding: 10 20 10 20;
     -fx-text-fill: #000000;
     -fx-font: 16px "Arial";
+    -fx-min-width: 300px;
+    -fx-max-width: 300px;
+
 }
 
 .song-button:hover {
@@ -28,6 +31,8 @@
     -fx-border-radius: 8;
     -fx-border-width: 0 0 1 0;
     -fx-padding: 10 20 10 20;
+    -fx-min-width: 150px;
+    -fx-max-width: 150px;
 }
 
 .generic-button:hover {
@@ -36,6 +41,30 @@
 
 .generic-button:pressed {
     -fx-background-color: #888888;
+}
+
+.grey-bg {
+    -fx-background-color: #e6e6e6;
+}
+
+.green-button {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #000000;
+    -fx-border-radius: 8;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 10 20 10 20;
+    -fx-min-width: 150px;
+    -fx-max-width: 150px;
+    -fx-background-color: #00ab00;
+}
+
+.green-button:hover {
+    -fx-background-color: #00d200;
+}
+
+.green-button:pressed {
+    -fx-background-color: #008000;
 }
 
 .title {
@@ -121,4 +150,14 @@
 
 .player-hbox {
     -fx-alignment: center;
+}
+
+.song-info {
+    -fx-alignment: center;
+    -fx-font-size: 16px;
+}
+
+.time-elapsed {
+    -fx-alignment: center;
+    -fx-font-size: 20px;
 }

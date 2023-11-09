@@ -16,11 +16,22 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
+    private static App instance;
     private MusicPlayerController musicPlayer;
     private FocusView focusView;
+    private Stage mainStage;
+
+    public static App getInstance() {
+        return instance;
+    }
+
+    public App() {
+        instance = this;
+    }
 
     @Override
     public void start(Stage stage) {
+        this.mainStage = stage;
         Settings.getInstance().readProperties();
 
         this.musicPlayer = MusicPlayerController.getInstance();
@@ -35,15 +46,21 @@ public class App extends Application {
         borderPane.setRight(CollectionController.getInstance().getPlaylistShelf());
         borderPane.setBottom(this.musicPlayer.getVBox());
         borderPane.setCenter(this.focusView.getVBox());
-        Scene scene = new Scene(borderPane, 640, 480);
+        Scene scene = new Scene(borderPane, 1280, 720);
         scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
         stage.setScene(scene);
+        stage.setTitle("OpenAudio");
+        stage.setMaximized(true);
         stage.show();
     }
 
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public Stage getStage() {
+        return this.mainStage;
     }
 
 }

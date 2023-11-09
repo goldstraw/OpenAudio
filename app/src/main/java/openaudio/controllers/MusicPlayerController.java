@@ -30,12 +30,9 @@ public class MusicPlayerController {
     private Button playButton;
     private Button nextButton;
     private Button previousButton;
-    private HBox songInfo;
+    private VBox songInfo;
     private Label songLabel;
-    private Label albumLabel;
-    private Label artistLabel;
-    private Label yearLabel;
-    private Label genreLabel;
+    private Label albumArtistLabel;
     private Label timeElapsedLabel;
     private DoubleProperty currentSongSeconds;
     private MediaPlayer mediaPlayer;
@@ -67,10 +64,7 @@ public class MusicPlayerController {
             this.mediaPlayer.stop();
         }
         this.songLabel.setText(song.getTitle());
-        this.albumLabel.setText(song.getAlbum());
-        this.artistLabel.setText(song.getArtist());
-        this.yearLabel.setText(song.getYear());
-        this.genreLabel.setText(song.getGenre());
+        this.albumArtistLabel.setText(song.getAlbum() + " - " + song.getArtist());
         File file = new File(song.getFilePath());
         this.mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
 
@@ -165,27 +159,22 @@ public class MusicPlayerController {
         this.slider = new Slider();
         vBox.getChildren().add(this.slider);
 
-        this.songInfo = new HBox();
+        this.songInfo = new VBox();
 
         this.songLabel = new Label("");
         this.songInfo.getChildren().add(this.songLabel);
 
-        this.albumLabel = new Label("");
-        this.songInfo.getChildren().add(this.albumLabel);
 
-        this.artistLabel = new Label("");
-        this.songInfo.getChildren().add(this.artistLabel);
+        this.albumArtistLabel = new Label("");
+        this.songInfo.getChildren().add(this.albumArtistLabel);
 
-        this.yearLabel = new Label("");
-        this.songInfo.getChildren().add(this.yearLabel);
-
-        this.genreLabel = new Label("");
-        this.songInfo.getChildren().add(this.genreLabel);
+        this.songInfo.getStyleClass().add("song-info");
 
         this.vBox.getChildren().add(this.songInfo);
 
         this.timeElapsedLabel = new Label("0:00 / 0:00");
         this.vBox.getChildren().add(this.timeElapsedLabel);
+        this.timeElapsedLabel.getStyleClass().add("time-elapsed");
 
         this.currentSongSeconds = new SimpleDoubleProperty();
     }
