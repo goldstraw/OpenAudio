@@ -17,6 +17,7 @@ public class Settings {
 
     private String musicFolder;
     private boolean shuffle;
+    private boolean repeat;
     private final String propertiesFileName = "settings.properties";
     private Properties properties = new Properties();
 
@@ -38,6 +39,7 @@ public class Settings {
                 properties.load(inputStream);
                 musicFolder = properties.getProperty("musicFolder");
                 shuffle = Boolean.parseBoolean(properties.getProperty("shuffle"));
+                repeat = Boolean.parseBoolean(properties.getProperty("repeat"));
                 inputStream.close();
             }
         } catch (Exception e) {
@@ -85,5 +87,21 @@ public class Settings {
 
     public boolean getShuffle() {
         return shuffle;
+    }
+
+    public void setRepeat(boolean repeat) {
+        this.repeat = repeat;
+        properties.setProperty("repeat", String.valueOf(repeat));
+        try {
+            OutputStream outputStream = new FileOutputStream(propertiesFileName);
+            properties.store(outputStream, null);
+            outputStream.close();
+        } catch (Exception e) {
+            System.out.println("Error saving properties: " + e.getMessage());
+        }
+    }
+
+    public boolean getRepeat() {
+        return repeat;
     }
 }

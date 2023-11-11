@@ -3,6 +3,8 @@ package openaudio.controllers;
 import openaudio.models.Song;
 import openaudio.controllers.QueueController;
 import openaudio.components.ShuffleButton;
+import openaudio.components.RepeatButton;
+import openaudio.utils.Settings;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.DoubleProperty;
@@ -82,8 +84,14 @@ public class MusicPlayerController {
         });
 
         mediaPlayer.setOnEndOfMedia(() -> {
-            Song nextSong = QueueController.getInstance().getNextSong();
-            playSong(nextSong);
+            boolean repeat = Settings.getInstance().getRepeat();
+            if (repeat) {
+                this.currentSongSeconds.set(0);
+                mediaPlayer.play();
+            } else {
+                Song nextSong = QueueController.getInstance().getNextSong();
+                playSong(nextSong);
+            }
         });
 
         this.playPauseView.setImage(pauseImage);
@@ -106,6 +114,9 @@ public class MusicPlayerController {
         previousView.setFitHeight(width / 80);
         previousView.setFitWidth(width / 80);
         this.previousButton.setGraphic(previousView);
+
+        RepeatButton repeatButton = new RepeatButton();
+        playerHBox.getChildren().add(repeatButton);
 
         vBox.getChildren().add(this.previousButton);
         this.previousButton.setOnAction(event -> {
