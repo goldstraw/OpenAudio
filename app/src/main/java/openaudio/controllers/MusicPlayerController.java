@@ -5,6 +5,7 @@ import openaudio.controllers.QueueController;
 import openaudio.components.ShuffleButton;
 import openaudio.components.RepeatButton;
 import openaudio.utils.Settings;
+import openaudio.utils.Statistics;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.DoubleProperty;
@@ -69,7 +70,9 @@ public class MusicPlayerController {
     public void playSong(Song song) {
         if (this.mediaPlayer != null) {
             this.mediaPlayer.stop();
+            Statistics.getInstance().writeStats(this.currentSong, this.currentSongSeconds.get());
         }
+
         this.songLabel.setText(song.getTitle());
         this.albumArtistLabel.setText(song.getAlbum() + " - " + song.getArtist());
         File file = new File(song.getFilePath());
