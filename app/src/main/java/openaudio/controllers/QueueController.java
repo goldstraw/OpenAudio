@@ -2,8 +2,11 @@ package openaudio.controllers;
 
 import openaudio.models.Song;
 import openaudio.models.SongCollection;
+import openaudio.utils.Settings;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 // Singleton
 public class QueueController {
@@ -36,17 +39,40 @@ public class QueueController {
         this.userQueue.addFirst(song);
     }
 
-    public void setCollection(SongCollection collection) {
-        this.collectionQueue.clear();
-        for (Song song : collection.getSongs()) {
-            this.collectionQueue.add(song);
+    // Shuffle collection queue
+    public void shuffleCollection() {
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 0; i < this.collectionQueue.size(); i++) {
+            numbers.add(i);
+        }
+        Collections.shuffle(numbers);
+
+        for (int i = 0; i < numbers.size(); i++) {
+            this.collectionQueue.add(this.collectionQueue.get(numbers.get(i)));
+        }
+
+        for (int i = 0; i < numbers.size(); i++) {
+            this.collectionQueue.removeFirst();
         }
     }
 
     public void setCollection(List<Song> collection) {
         this.collectionQueue.clear();
-        for (Song song : collection) {
-            this.collectionQueue.add(song);
+        boolean shuffle = Settings.getInstance().getShuffle();
+        if (shuffle) {
+            List<Integer> numbers = new ArrayList<>();
+            for (int i = 0; i < collection.size(); i++) {
+                numbers.add(i);
+            }
+            Collections.shuffle(numbers);
+            
+            for (int i = 0; i < collection.size(); i++) {
+                this.collectionQueue.add(collection.get(numbers.get(i)));
+            }
+        } else {
+            for (Song song : collection) {
+                this.collectionQueue.add(song);
+            }
         }
     }
 

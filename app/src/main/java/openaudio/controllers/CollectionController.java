@@ -43,7 +43,7 @@ public class CollectionController {
     }
 
     private void loadCollections() {
-        String musicFolder = Settings.getInstance().musicFolder;
+        String musicFolder = Settings.getInstance().getMusicFolder();
         String[] folders = new File(musicFolder).list();
 
         ArrayList<Album> albums = new ArrayList<Album>();
@@ -156,7 +156,7 @@ public class CollectionController {
         this.playlistShelf = new VBox();
         this.playlistShelf.setAlignment(Pos.CENTER);
 
-        if (Settings.getInstance().musicFolder == null) {
+        if (Settings.getInstance().getMusicFolder() == null) {
             this.chooseDirButton = new Button("Choose Music Directory");
             this.albumShelf.getChildren().add(this.chooseDirButton);
 
@@ -191,7 +191,7 @@ public class CollectionController {
     public void addPlaylist(Playlist playlist) {
         this.playlists.add(playlist);
         // Create folder for playlist with .playlistinfo extension
-        String musicFolder = Settings.getInstance().musicFolder;
+        String musicFolder = Settings.getInstance().getMusicFolder();
         String playlistFolder = musicFolder + "/" + playlist.getName();
         File file = new File(playlistFolder);
         file.mkdir();

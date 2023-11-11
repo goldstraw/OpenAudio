@@ -15,7 +15,8 @@ public class Settings {
 
     private static Settings instance = null;
 
-    public String musicFolder;
+    private String musicFolder;
+    private boolean shuffle;
     private final String propertiesFileName = "settings.properties";
     private Properties properties = new Properties();
 
@@ -36,6 +37,7 @@ public class Settings {
                 InputStream inputStream = new FileInputStream(file);
                 properties.load(inputStream);
                 musicFolder = properties.getProperty("musicFolder");
+                shuffle = Boolean.parseBoolean(properties.getProperty("shuffle"));
                 inputStream.close();
             }
         } catch (Exception e) {
@@ -67,5 +69,21 @@ public class Settings {
 
     public String getMusicFolder() {
         return musicFolder;
+    }
+
+    public void setShuffle(boolean shuffle) {
+        this.shuffle = shuffle;
+        properties.setProperty("shuffle", String.valueOf(shuffle));
+        try {
+            OutputStream outputStream = new FileOutputStream(propertiesFileName);
+            properties.store(outputStream, null);
+            outputStream.close();
+        } catch (Exception e) {
+            System.out.println("Error saving properties: " + e.getMessage());
+        }
+    }
+
+    public boolean getShuffle() {
+        return shuffle;
     }
 }

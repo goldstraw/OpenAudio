@@ -30,7 +30,7 @@ public class Album implements SongCollection {
     }
 
     public List<Song> loadSongs() {
-        String musicFolder = Settings.getInstance().musicFolder;
+        String musicFolder = Settings.getInstance().getMusicFolder();
         String albumFolder = musicFolder + "/" + this.filePath;
         String albumInfoPath = albumFolder + "/" + this.filePath + ".albuminfo";
 
@@ -88,7 +88,7 @@ public class Album implements SongCollection {
     }
 
     public Image loadCoverImage() {
-        String musicFolder = Settings.getInstance().musicFolder;
+        String musicFolder = Settings.getInstance().getMusicFolder();
         String albumFolder = musicFolder + "/" + this.filePath;
         String[] allFiles = new File(albumFolder).list();
 
@@ -146,7 +146,7 @@ public class Album implements SongCollection {
     }
 
     private void updateAlbumInfoFile() {
-        String musicFolder = Settings.getInstance().musicFolder;
+        String musicFolder = Settings.getInstance().getMusicFolder();
         String albumFolder = musicFolder + "/" + this.filePath;
         String albumInfoPath = albumFolder + "/" + this.filePath + ".albuminfo";
         try {

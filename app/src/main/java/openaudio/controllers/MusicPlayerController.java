@@ -2,6 +2,7 @@ package openaudio.controllers;
 
 import openaudio.models.Song;
 import openaudio.controllers.QueueController;
+import openaudio.components.ShuffleButton;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.DoubleProperty;
@@ -57,6 +58,10 @@ public class MusicPlayerController {
     }
 
     private MusicPlayerController() {
+    }
+
+    public Song getSong() {
+        return this.currentSong;
     }
 
     public void playSong(Song song) {
@@ -152,6 +157,9 @@ public class MusicPlayerController {
             playSong(QueueController.getInstance().getNextSong());
         });
         playerHBox.getChildren().add(this.nextButton);
+
+        ShuffleButton shuffleButton = new ShuffleButton();
+        playerHBox.getChildren().add(shuffleButton);
 
         playerHBox.getStyleClass().add("player-hbox");
         this.vBox.getChildren().add(playerHBox);

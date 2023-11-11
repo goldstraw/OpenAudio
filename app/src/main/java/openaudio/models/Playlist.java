@@ -27,7 +27,7 @@ public class Playlist implements SongCollection {
         this.year = "";
 
         // Create playlist folder if it doesn't exist
-        String musicFolder = Settings.getInstance().musicFolder;
+        String musicFolder = Settings.getInstance().getMusicFolder();
         String playlistFolder = musicFolder + "/" + this.filePath;
         File file = new File(playlistFolder);
         if (!file.exists()) {
@@ -49,7 +49,7 @@ public class Playlist implements SongCollection {
     }
 
     public List<Song> loadSongs() {
-        String musicFolder = Settings.getInstance().musicFolder;
+        String musicFolder = Settings.getInstance().getMusicFolder();
         String playlistFolder = musicFolder + "/" + this.filePath;
         String playlistInfoPath = playlistFolder + "/" + this.title + ".playlistinfo";
 
@@ -71,7 +71,7 @@ public class Playlist implements SongCollection {
     }
 
     public Image loadCoverImage() {
-        String musicFolder = Settings.getInstance().musicFolder;
+        String musicFolder = Settings.getInstance().getMusicFolder();
         String playlistFolder = musicFolder + "/" + this.filePath;
         String[] allFiles = new File(playlistFolder).list();
 
@@ -129,7 +129,7 @@ public class Playlist implements SongCollection {
     }
 
     private void updatePlaylistInfoFile() {
-        String musicFolder = Settings.getInstance().musicFolder;
+        String musicFolder = Settings.getInstance().getMusicFolder();
         String playlistFolder = musicFolder + "/" + this.filePath;
         String playlistInfoPath = playlistFolder + "/" + this.title + ".playlistinfo";
         try {

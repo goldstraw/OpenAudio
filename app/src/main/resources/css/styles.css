@@ -47,6 +47,10 @@
     -fx-background-color: #e6e6e6;
 }
 
+.green-bg {
+    -fx-background-color: #00ab00;
+}
+
 .green-button {
     -fx-background-color: #ffffff;
     -fx-background-radius: 8;
