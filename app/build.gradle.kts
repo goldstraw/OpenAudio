@@ -32,6 +32,9 @@ dependencies {
 
     // https://mavenlibs.com/maven/dependency/com.mpatric/mp3agic
     implementation("com.mpatric:mp3agic:0.9.1")
+
+    // JSON parser
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 application {

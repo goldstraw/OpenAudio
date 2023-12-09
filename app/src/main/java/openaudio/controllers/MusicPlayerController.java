@@ -17,6 +17,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
@@ -50,6 +51,7 @@ public class MusicPlayerController {
     private final Image pauseImage = new Image(getClass().getResourceAsStream("/img/pause-icon.png"));
     private final Image nextImage = new Image(getClass().getResourceAsStream("/img/step-forward-icon.png"));
     private final Image previousImage = new Image(getClass().getResourceAsStream("/img/step-backward-icon.png"));
+    private final Image darkModeImage = new Image(getClass().getResourceAsStream("/img/dark-mode-icon.png"));
 
     private static MusicPlayerController instance = null;
 
@@ -110,9 +112,37 @@ public class MusicPlayerController {
         this.vBox = new VBox();
         this.vBox.setAlignment(Pos.BOTTOM_CENTER);
 
+        // To have the player in the middle, with other components on the sides, we need to use a GridPane
+        // with 3 columns, and the player in the middle column.
+        // The left and right columns will be empty, but will have a width of 1/3 of the screen width.
+        // The player will have a width of 1/3 of the screen width.
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPrefWidth(width);
+
         HBox playerHBox = new HBox();
+        borderPane.setCenter(playerHBox);
+
+        Button darkModeButton = new Button();
+        ImageView darkModeView = new ImageView(this.darkModeImage);
+        darkModeView.setFitHeight(width / 80);
+        darkModeView.setFitWidth(width / 80);
+        darkModeButton.setGraphic(darkModeView);
+        darkModeButton.setOnAction(event -> {
+            Settings.getInstance().toggleDarkMode();
+        });
+        borderPane.setRight(darkModeButton);
+
+        Button darkModeButton2 = new Button();
+        ImageView darkModeView2 = new ImageView(this.darkModeImage);
+        darkModeView2.setFitHeight(width / 80);
+        darkModeView2.setFitWidth(width / 80);
+        darkModeButton2.setGraphic(darkModeView2);
+        borderPane.setLeft(darkModeButton2);
+
 
         this.previousButton = new Button();
+        previousButton.getStyleClass().add("grey-bg");
         ImageView previousView = new ImageView(this.previousImage);
         previousView.setFitHeight(width / 80);
         previousView.setFitWidth(width / 80);
@@ -135,6 +165,7 @@ public class MusicPlayerController {
         playerHBox.getChildren().add(this.previousButton);
 
         this.playButton = new Button();
+        this.playButton.getStyleClass().add("grey-bg");
 
         this.playPauseView = new ImageView(this.playImage);
         this.playPauseView.setFitHeight(width / 80);
@@ -157,6 +188,7 @@ public class MusicPlayerController {
         playerHBox.getChildren().add(this.playButton);
 
         this.nextButton = new Button();
+        nextButton.getStyleClass().add("grey-bg");
         ImageView nextView = new ImageView(this.nextImage);
         nextView.setFitHeight(width / 80);
         nextView.setFitWidth(width / 80);
@@ -176,7 +208,7 @@ public class MusicPlayerController {
         playerHBox.getChildren().add(shuffleButton);
 
         playerHBox.getStyleClass().add("player-hbox");
-        this.vBox.getChildren().add(playerHBox);
+        this.vBox.getChildren().add(borderPane);
 
         this.slider = new Slider();
         vBox.getChildren().add(this.slider);

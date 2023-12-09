@@ -24,9 +24,11 @@ public class RepeatButton extends Button {
         repeatView.setFitHeight(width / 80);
         repeatView.setFitWidth(width / 80);
         this.setGraphic(repeatView);
+        this.getStyleClass().add("grey-bg");
 
         if (this.repeating) {
             this.getStyleClass().add("green-bg");
+            this.getStyleClass().remove("grey-bg");
         }
 
         this.setOnAction(event -> {
@@ -34,8 +36,10 @@ public class RepeatButton extends Button {
             this.getStyleClass().clear();
             Settings.getInstance().setRepeat(this.repeating);
             this.getStyleClass().add("button");
+            this.getStyleClass().add("grey-bg");
             if (this.repeating) {
                 this.getStyleClass().add("green-bg");
+                this.getStyleClass().remove("grey-bg");
             }
         });
     }

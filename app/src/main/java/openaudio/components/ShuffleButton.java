@@ -24,9 +24,11 @@ public class ShuffleButton extends Button {
         shuffleView.setFitHeight(width / 80);
         shuffleView.setFitWidth(width / 80);
         this.setGraphic(shuffleView);
+        this.getStyleClass().add("grey-bg");
 
         if (this.shuffling) {
             this.getStyleClass().add("green-bg");
+            this.getStyleClass().remove("grey-bg");
         }
 
         this.setOnAction(event -> {
@@ -34,8 +36,10 @@ public class ShuffleButton extends Button {
             this.getStyleClass().clear();
             Settings.getInstance().setShuffle(this.shuffling);
             this.getStyleClass().add("button");
+            this.getStyleClass().add("grey-bg");
             if (this.shuffling) {
                 this.getStyleClass().add("green-bg");
+                this.getStyleClass().remove("grey-bg");
             }
 
             // Shuffle the remainder of the collection

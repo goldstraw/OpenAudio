@@ -115,11 +115,13 @@ public class FocusView {
         this.vBox.getChildren().add(titleBox);
 
         VBox collectionVBox = new VBox();
+        collectionVBox.getStyleClass().add("generic-dark");
         FlowPane flowPane = new FlowPane();
         flowPane.setHgap(50);
         flowPane.setVgap(20);
         // Adjust wrap length based on window size
         flowPane.prefWrapLengthProperty().bind(App.getInstance().getStage().widthProperty().subtract(200));
+        flowPane.getStyleClass().add("generic-dark");
 
 
         for (Song song : this.songCollection.getSongs()) {

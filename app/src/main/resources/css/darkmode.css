@@ -1,5 +1,5 @@
 .song-button {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #444;
     -fx-background-radius: 8;
     -fx-border-color: #000000;
     -fx-border-radius: 8;
@@ -7,7 +7,7 @@
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-padding: 10 20 10 20;
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
     -fx-font: 16px "Arial";
     -fx-min-width: 300px;
     -fx-max-width: 300px;
@@ -16,7 +16,7 @@
 
 .song-button:hover {
     -fx-background-color: #aaaaaa;
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
 }
 
 .song-button:pressed {
@@ -25,7 +25,7 @@
 }
 
 .generic-button {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #666666;
     -fx-background-radius: 8;
     -fx-border-color: #000000;
     -fx-border-radius: 8;
@@ -44,7 +44,7 @@
 }
 
 .grey-bg {
-    -fx-background-color: #e6e6e6;
+    -fx-background-color: #666;
 }
 
 .green-bg {
@@ -75,25 +75,27 @@
     -fx-font-size: 38px;
     -fx-font-weight: bold;
     -fx-padding: 20 20 0 20;
+    -fx-text-fill: #ffffff;
 }
 
 .artist-label {
     -fx-font-size: 30px;
     -fx-font-weight: bold;
     -fx-padding: 5 20 10 20;
+    -fx-text-fill: #ffffff;
 }
 
 .title-box {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #222222;
     -fx-background-radius: 8;
-    -fx-border-color: #000000;
+    -fx-border-color: #ffffff;
     -fx-border-radius: 8;
     -fx-border-width: 0 0 1 0;
     -fx-padding: 10 20 10 20;
 }
 
 .album-cover {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #222222;
     -fx-background-radius: 8;
     -fx-border-color: #000000;
     -fx-border-radius: 8;
@@ -103,6 +105,27 @@
 
 .album-shelf {
     -fx-padding: 0 17 0 10;
+    -fx-background-color: #222222;
+    -fx-text-fill: #ffffff;
+}
+
+.playlist-shelf {
+    -fx-background-color: #222222;
+    -fx-text-fill: #ffffff;
+
+}
+
+.generic-dark {
+    -fx-background-color: #222222;
+    -fx-text-fill: #ffffff;
+}
+
+.scroll-pane {
+    -fx-background-color: #222222;
+}
+
+.scroll-bar {
+    -fx-background-color: #222222;
 }
 
 .scroll-bar:horizontal .track,
@@ -144,7 +167,7 @@
 
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb {
-    -fx-background-color :#000000;
+    -fx-background-color :#fff;
     -fx-background-insets : 2.0, 0.0, 0.0;
     -fx-background-radius : 3.0em;
 }
@@ -171,5 +194,6 @@
 }
 
 .root {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #222222;
+    -fx-text-fill: #ffffff;
 }

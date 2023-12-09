@@ -20,6 +20,7 @@ public class App extends Application {
     private MusicPlayerController musicPlayer;
     private FocusView focusView;
     private Stage mainStage;
+    private Scene mainScene;
 
     public static App getInstance() {
         return instance;
@@ -47,11 +48,16 @@ public class App extends Application {
         borderPane.setBottom(this.musicPlayer.getVBox());
         borderPane.setCenter(this.focusView.getVBox());
         Scene scene = new Scene(borderPane, 1280, 720);
-        scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+        if (Settings.getInstance().getDarkMode()) {
+            scene.getStylesheets().add(getClass().getResource("/css/darkmode.css").toExternalForm());
+        } else {
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+        }
         stage.setScene(scene);
         stage.setTitle("OpenAudio");
         stage.setMaximized(true);
         stage.show();
+        this.mainScene = scene;
     }
 
 
@@ -61,6 +67,10 @@ public class App extends Application {
 
     public Stage getStage() {
         return this.mainStage;
+    }
+
+    public Scene getScene() {
+        return this.mainScene;
     }
 
 }

@@ -1,5 +1,7 @@
 package openaudio.utils;
 
+import openaudio.App;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,6 +20,7 @@ public class Settings {
     private String musicFolder;
     private boolean shuffle;
     private boolean repeat;
+    private boolean darkMode;
     private final String propertiesFileName = "settings.properties";
     private Properties properties = new Properties();
 
@@ -40,6 +43,7 @@ public class Settings {
                 musicFolder = properties.getProperty("musicFolder");
                 shuffle = Boolean.parseBoolean(properties.getProperty("shuffle"));
                 repeat = Boolean.parseBoolean(properties.getProperty("repeat"));
+                darkMode = Boolean.parseBoolean(properties.getProperty("darkMode"));
                 inputStream.close();
             }
         } catch (Exception e) {
@@ -103,5 +107,31 @@ public class Settings {
 
     public boolean getRepeat() {
         return repeat;
+    }
+    
+    public boolean getDarkMode() {
+        return darkMode;
+    }
+
+    public void toggleDarkMode() {
+        darkMode = !darkMode;
+
+        if (darkMode) {
+            properties.setProperty("darkMode", "true");
+            App.getInstance().getScene().getStylesheets().add(getClass().getResource("/css/darkmode.css").toExternalForm());
+            App.getInstance().getScene().getStylesheets().remove(getClass().getResource("/css/styles.css").toExternalForm());
+        } else {
+            properties.setProperty("darkMode", "false");
+            App.getInstance().getScene().getStylesheets().remove(getClass().getResource("/css/darkmode.css").toExternalForm());
+            App.getInstance().getScene().getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+        }
+
+        try {
+            OutputStream outputStream = new FileOutputStream(propertiesFileName);
+            properties.store(outputStream, null);
+            outputStream.close();
+        } catch (Exception e) {
+            System.out.println("Error saving properties: " + e.getMessage());
+        }
     }
 }

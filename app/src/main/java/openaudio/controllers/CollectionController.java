@@ -77,11 +77,12 @@ public class CollectionController {
     }
 
     private void createAlbumShelf() {
+        Screen screen = Screen.getPrimary();
+        double height = screen.getVisualBounds().getHeight();
         VBox scrollVBox = new VBox();
+        scrollVBox.getStyleClass().add("album-shelf");
         for (Album album : albums) {
             ImageView albumCover = new ImageView(album.getCoverImage());
-            Screen screen = Screen.getPrimary();
-            double height = screen.getVisualBounds().getHeight();
             albumCover.setFitHeight(height / 12);
             albumCover.setFitWidth(height / 12);
             albumCover.setPreserveRatio(true);
@@ -95,10 +96,12 @@ public class CollectionController {
                 FocusView.getInstance().setSongCollection(album);
             });
 
-            //Create Label for the album name
+            // Create Label for the album name
             Label albumLabel = new Label(album.getName());
+            albumLabel.getStyleClass().add("generic-dark");
             albumLabel.setWrapText(true);
             albumLabel.setTextAlignment(TextAlignment.CENTER);
+            albumLabel.setPrefWidth(height / 15);
 
             //Create VBox and add both ImageView and Label
             VBox albumBox = new VBox(albumCover, albumLabel);
@@ -107,11 +110,15 @@ public class CollectionController {
             scrollVBox.getChildren().add(albumBox);
         }
         ScrollPane scrollPane = new ScrollPane(scrollVBox);
+        scrollPane.getStyleClass().add("scroll-pane");
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
         this.albumShelf.getChildren().add(scrollPane);
     }
 
     private void createPlaylistShelf() {
         VBox scrollVBox = new VBox();
+        scrollVBox.getStyleClass().add("playlist-shelf");
         for (Playlist playlist : playlists) {
             ImageView playlistCover = new ImageView(playlist.getCoverImage());
             playlistCover.fitWidthProperty().bind(this.playlistShelf.heightProperty().divide(12));
@@ -137,6 +144,7 @@ public class CollectionController {
 
             //Create Label for the album name
             Label playlistLabel = new Label(playlist.getName());
+            playlistLabel.getStyleClass().add("generic-dark");
             playlistLabel.setWrapText(true);
             playlistLabel.setTextAlignment(TextAlignment.CENTER);
 
@@ -147,6 +155,7 @@ public class CollectionController {
             scrollVBox.getChildren().add(playlistBox);
         }
         ScrollPane scrollPane = new ScrollPane(scrollVBox);
+        scrollPane.getStyleClass().add("scroll-pane");
         this.playlistShelf.getChildren().add(scrollPane);
     }
 
