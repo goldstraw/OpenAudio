@@ -5,6 +5,7 @@ import openaudio.models.Song;
 import openaudio.controllers.MusicPlayerController;
 import openaudio.controllers.QueueController;
 import openaudio.views.FocusView;
+import openaudio.utils.Settings;
 import javafx.stage.Screen;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -17,8 +18,16 @@ public class SongButton extends Button {
         super(song.getTitle());
         this.setOnAction(event -> {
             MusicPlayerController.getInstance().playSong(song);
-            List<Song> remainingSongs = songCollection.getRemainingSongs(song);
-            QueueController.getInstance().setCollection(remainingSongs);
+            // If shuffle isn't on, only add the remaining songs to the queue
+            if (!Settings.getInstance().getShuffle()) {
+                List<Song> remainingSongs = songCollection.getRemainingSongs(song);
+                QueueController.getInstance().setCollection(remainingSongs);
+            } else {
+                List<Song> shuffleSongs = songCollection.getSongs();
+                // Remove the song that was just played
+                shuffleSongs.remove(song);
+                QueueController.getInstance().setCollection(shuffleSongs);
+            }
             QueueController.getInstance().clearFutureQueue();
         });
         this.getStyleClass().add("song-button");

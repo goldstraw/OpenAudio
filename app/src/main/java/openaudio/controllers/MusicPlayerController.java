@@ -222,11 +222,14 @@ public class MusicPlayerController {
         this.albumArtistLabel = new Label("");
         this.songInfo.getChildren().add(this.albumArtistLabel);
 
+        this.songLabel.getStyleClass().add("generic-dark");
+        this.albumArtistLabel.getStyleClass().add("generic-dark");
         this.songInfo.getStyleClass().add("song-info");
 
         this.vBox.getChildren().add(this.songInfo);
 
         this.timeElapsedLabel = new Label("0:00 / 0:00");
+        this.timeElapsedLabel.getStyleClass().add("generic-dark");
         this.vBox.getChildren().add(this.timeElapsedLabel);
         this.timeElapsedLabel.getStyleClass().add("time-elapsed");
 

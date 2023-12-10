@@ -1,12 +1,16 @@
 package openaudio.controllers;
 
 import openaudio.models.Song;
+import openaudio.models.Album;
 import openaudio.models.SongCollection;
+import openaudio.controllers.CollectionController;
 import openaudio.utils.Settings;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Random;
 
 // Singleton
 public class QueueController {
@@ -76,8 +80,47 @@ public class QueueController {
         }
     }
 
+    // Sort collection queue by track number
+    public void sortCollection() {
+        Collections.sort(this.collectionQueue, new Comparator<Song>() {
+            @Override
+            public int compare(Song song1, Song song2) {
+                String s1 = song1.getTrack();
+                String s2 = song2.getTrack();
+
+                if(s1.length() < s2.length()){
+                    return s2.length() - s1.length();
+                }
+                else if(s1.length() > s2.length()){
+                    return s1.length() - s2.length();
+                }
+                for (int i = 0; i < s1.length() && i < s2.length(); i++) {
+                    if (s1.charAt(i) == s2.charAt(i)) {
+                        //System.out.println("Equal");
+                        continue;
+                    } else {
+                        return s1.charAt(i) - s2.charAt(i);
+                    }
+                }
+                return 0;
+            }
+        });
+    }
+
     public void addRecommendation() {
-        // TODO: Implement
+        // Randomly select any song from the user's library
+        // Re-select if the song is in the history
+        List<Album> albums = CollectionController.getInstance().getAlbums();
+
+        while (this.recommendationQueue.size() < 5) {
+            Random random = new Random();
+            Album randomAlbum = albums.get(random.nextInt(albums.size()));
+            List<Song> songs = randomAlbum.getSongs();
+            Song randomSong = songs.get(random.nextInt(songs.size()));
+            if (!this.history.contains(randomSong)) {
+                this.recommendationQueue.add(randomSong);
+            }
+        }
     }
 
     public Song getNextSong() {
@@ -111,5 +154,9 @@ public class QueueController {
 
     public void clearFutureQueue() {
         this.futureQueue.clear();
+    }
+
+    public void clearCollectionQueue() {
+        this.collectionQueue.clear();
     }
 }

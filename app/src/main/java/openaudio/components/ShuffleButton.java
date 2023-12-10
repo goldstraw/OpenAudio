@@ -40,12 +40,14 @@ public class ShuffleButton extends Button {
             if (this.shuffling) {
                 this.getStyleClass().add("green-bg");
                 this.getStyleClass().remove("grey-bg");
+                // Shuffle the remainder of the collection
+                Song currentSong = MusicPlayerController.getInstance().getSong();
+                QueueController.getInstance().shuffleCollection();
+                QueueController.getInstance().clearFutureQueue();
+            } else {
+                QueueController.getInstance().sortCollection();
             }
 
-            // Shuffle the remainder of the collection
-            Song currentSong = MusicPlayerController.getInstance().getSong();
-            QueueController.getInstance().shuffleCollection();
-            QueueController.getInstance().clearFutureQueue();
         });
     }
 }

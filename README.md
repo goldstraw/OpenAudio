@@ -9,13 +9,13 @@ Written in Java with JavaFX. Supports Windows, Linux, and MacOS.
 
 ## Features
 - [x] Play local audio files
-- [x] Playlists
-- [x] Albums
+- [x] Playlists, Albums
 - [x] Queue
-- [ ] Shuffle
-- [ ] Repeat
+- [x] Shuffle, Repeat
+- [x] Dark mode
 - [ ] Search
-- [ ] Dark mode
+- [ ] OpenAudio Rewind
+
 
 ## Building
 ### Requirements
